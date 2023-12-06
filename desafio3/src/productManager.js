@@ -1,6 +1,7 @@
-const fs = require('fs');
+/* const fs = require('fs'); */
+import fs from 'fs';
 
-class ProductManager {
+export class ProductManager {
     constructor(path) {
         this.path = path;
     }
@@ -87,6 +88,30 @@ const test = async () => {
     
     const emptyArray = console.log(await productManager.getProducts());
 
+/*     await productManager.addProduct({
+        title: "producto prueba",
+        description: "Este es un producto prueba",
+        price: 200,
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25,
+    })
+    await productManager.addProduct({
+        title: "producto prueba",
+        description: "Este es un producto prueba",
+        price: 200,
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25,
+    })
+    await productManager.addProduct({
+        title: "producto prueba",
+        description: "Este es un producto prueba",
+        price: 200,
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25,
+    })
     await productManager.addProduct({
         title: "producto prueba",
         description: "Este es un producto prueba",
@@ -111,8 +136,32 @@ const test = async () => {
         code: "abc123",
         stock: 25,
     })
+    await productManager.addProduct({
+        title: "producto prueba",
+        description: "Este es un producto prueba",
+        price: 200,
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25,
+    })
+    await productManager.addProduct({
+        title: "producto prueba",
+        description: "Este es un producto prueba",
+        price: 200,
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25,
+    })
+    await productManager.addProduct({
+        title: "producto prueba",
+        description: "Este es un producto prueba",
+        price: 200,
+        thumbnail: "Sin imagen",
+        code: "abc123",
+        stock: 25,
+    }) */
 
-    const getProductsAdded = console.log(await productManager.getProducts());
+/*     const getProductsAdded = console.log(await productManager.getProducts());
 
     await productManager.getProductById(1);
 
@@ -121,9 +170,7 @@ const test = async () => {
         id: 5,
     });
 
-    await productManager.deleteProduct(3);
+    await productManager.deleteProduct(3); */
 }
-
-
 test();
 
