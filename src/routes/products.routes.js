@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { Products } from '../ProductManager.js';
 
+
 const productsRoutes = Router();
+
 
 let productsData = new Products('./src/products.json');
 
@@ -15,10 +17,10 @@ productsRoutes.get('/', async (req, res) => {
     res.send(limitedProducts);
 });
 
-productsRoutes.get('/:pid', (req, res) => {
+productsRoutes.get('/:pid', async (req, res) => {
     let { pid } = req.params;
     try {
-        let products = productsData.productById(parseInt(pid));
+        let products = await productsData.productById(parseInt(pid));
         res.send(products);
         
     } catch (error) {
@@ -35,15 +37,20 @@ productsRoutes.post('/', (req, res) => {
 productsRoutes.put('/:pid', async (req, res) => {
     let { pid } = req.params;
     const updateProduct = req.body;
-    productsData.productById(parseInt(pid));
-    productsData.updateProduct(parseInt(pid), updateProduct);
+    await productsData.productById(parseInt(pid));
+    await productsData.updateProduct(parseInt(pid), updateProduct);
     res.send({message: 'updated successfully'})
 });
 
-productsRoutes.delete('/:pid', (req, res) => {
+productsRoutes.delete('/:pid', async (req, res) => {
     let { pid } = req.params;
-    productsData.deleteById(parseInt(pid));
-    res.send({message: 'product deleted'})
+    const deleteSuccess = await productsData.deleteById(parseInt(pid));
+    if(deleteSuccess){
+        res.send({message: 'product deleted'})
+    }
+    else{
+        res.status(404).send({message: 'invalid product id, cannot delete'})
+    }
 });
 
 export default productsRoutes;

@@ -79,10 +79,12 @@ export class Products {
         const findedProduct = allProducts.find(p => p.id === +productId);
         if (!findedProduct) {
             console.error('Invalid product ID, cannot delete')
+            return false;
         }
         else {
             const productsDeleted = allProducts.filter(p => p.id !== +productId);
             await fs.promises.writeFile(this.path, JSON.stringify(productsDeleted), 'utf-8');
+            return true;
         }
     }
 

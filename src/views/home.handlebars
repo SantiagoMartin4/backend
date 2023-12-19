@@ -1,0 +1,34 @@
+<div>
+    <p>HOLA ESTO ES DESDE HOME.HANDLEBARS</p>
+    <div>
+        {{#each products}}
+        <table>
+            <tr>
+                <th>Title:</th>
+                <td>{{this.title}}</td>
+            </tr>
+            <hr>
+            <tr>
+                <th>Description:</th>
+                <td>{{this.description}}</td>
+            </tr>
+            <tr>
+                <th>Price:</th>
+                <td>{{this.price}}</td>
+            </tr>
+            <tr>
+                <th>Thumbnail:</th>
+                <td>{{this.thumbnail}}{{!-- <img src="{{this.thumbnail}}" alt="Thumbnail"> --}}</td>
+            </tr>
+            <tr>
+                <th>Code:</th>
+                <td>{{this.code}}</td>
+            </tr>
+            <tr>
+                <th>Stock:</th>
+                <td>{{this.stock}}</td>
+            </tr>
+        </table>
+        {{/each}}
+    </div>
+</div>
