@@ -1,11 +1,18 @@
 <div>
     <h1>Esto es real time products handlebars con socket.io</h1>
-    <h2>Al manejarlo desde Postman con los métodos *Add Product, *Delete Product y *Update Product se actualiza y renderiza automaticamente mediante el uso de WebSockets entre app.js -server side- e index.js -client side-, usando realtimeproducts handlebar view</h2>
+    <h2>Al manejarlo desde Postman con los métodos *Add Product, *Delete Product y *Update Product se actualiza y renderiza automaticamente mediante el uso de WebSockets entre app.js -server side- e index.js -client side-, usando realtimeproducts handlebar view.</h2>
+    <h2>Además, antes funcionaba leyendo el JSON con file system, mientras que ahora funciona con mongoose conectandose a mi DataBase "ecommerce" y a mi colección "products"</h2>
 
     <ul id="productList"></ul>
 
 </div>
 
+<div>
+    <h3>Este va a ser el chat</h3> 
+    <input type="text" id="inputData" />
+    <p id="outputData"></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/index.js"></script>
 

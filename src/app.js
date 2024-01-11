@@ -1,12 +1,19 @@
+// import express
 import express from 'express';
 // Importo handlebars
 import handlebars from 'express-handlebars';
-// Hago los imports de los Routers que se ubican en la carpeta Routes
+// Hago los imports de los Routers que se ubican en la carpeta routes
 import productsRoutes from './routes/products.routes.js';
 import cartsRoutes from './routes/carts.routes.js';
+// import viewsRoutes para la parte de handlebars
 import viewsRoutes from './routes/views.routes.js';
+// importo server para usa socket io
 import { Server } from 'socket.io';
-import { Products } from './ProductManager.js';
+import { productModel } from './dao/models/product.model.js';
+/* import { Products } from './dao/ProductManager.js'; */
+//importo mongoose
+import mongoose from 'mongoose';
+
 
 const PORT = 8080;
 const app = express();
@@ -17,34 +24,42 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(express.static('public'));
 
+// Declaro mi conexión con mongoose
+
+mongoose.connect('mongodb+srv://santimartin:smartin4@smartin.yitodb3.mongodb.net/ecommerce');
+
 const httpServer = app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
 });
 
 
 // preparo websockets del lado del servidor 
-let productsData = new Products('./src/products.json');
+/* let productsData = new Products('./src/products.json'); */
 
 export const io = new Server(httpServer);
 
 const emitProductsWithSocket = async (socket) => {
     try {
-        const products = await productsData.products();
+        const products = await productModel.find();
         socket.emit('getProdsWithSocket', products);
     } catch (error) {
         console.log(error);        
     }
 };
 
-io.on('connection', products => {
+const messages = []
+
+io.on('connection', socket => {
     console.log('Nuevo cliente conectado');
-    emitProductsWithSocket(products);
+    socket.on('message', data => {
+        messages.push(data);
+        io.emit('messageLogs', messages);
+    });
+    emitProductsWithSocket(socket);
 });
 
-/*     socket.on('message', data =>{
-        console.log(data); */
 
-// declaro los routers usando app.use
+// declaro las rutas usando app.use
 
 app.use('/api/products', productsRoutes);
 app.use('/api/carts', cartsRoutes);
@@ -54,7 +69,6 @@ app.use('/api/carts', cartsRoutes);
 app.engine('handlebars', handlebars.engine());
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
-
 app.use('/', viewsRoutes);
 
 
