@@ -9,7 +9,7 @@ import cartsRoutes from './routes/carts.routes.js';
 import viewsRoutes from './routes/views.routes.js';
 // importo server para usa socket io
 import { Server } from 'socket.io';
-import { productModel } from './dao/models/product.model.js';
+import { productModel } from './dao/models/products.model.js';
 /* import { Products } from './dao/ProductManager.js'; */
 //importo mongoose
 import mongoose from 'mongoose';

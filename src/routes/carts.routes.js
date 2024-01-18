@@ -1,13 +1,40 @@
 import { Router } from 'express';
-import { cartModel } from '../dao/models/cart.model.js';
-// imports de la lógica con file system
+
+// +++++ DE MONGO SIN SEPARAR EN MONGO MANAGER:
+/* import { cartModel } from '../dao/models/carts.model.js'; */
+
+// +++++ IMPORTS DE LA LOGICA ANTIGUA CON FILE SYSTEM:
 /* import  Carts from '../dao/CartManager.js'; */
 /* const carts = new Carts('./src/cart.json'); */
 
+import { CartMongoManager } from '../dao/managerDB/CartMongoManager.js'
+
 const cartsRoutes = Router();
 
+cartsRoutes.delete('/:cId/products/:pId', async (req, res) => {
+    const { cId, pId } = req.params;
+    const cartManager = new CartMongoManager();
+    try {
+        const result = await cartManager.deleteProdInCart(cId, pId);
+        if (result) {
+            res.send({ message: 'Product deleted' });
+        }
+        else {
+            res.status(400).json({ message: 'could not delete product' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'could not delete product' });
+    }
+});
 
 
+
+
+
+//  --------------------------- SIN SEPARAR EN MONGO MANAGER -------------------
+
+/* 
 cartsRoutes.get('/', async (req,res) => {
     const cartData = await cartModel.find();
     res.send(cartData);
@@ -35,6 +62,7 @@ cartsRoutes.post('/', async (req, res) => {
 });
 
 
+
 cartsRoutes.post('/:cid/product/:pid', async (req, res) => {
     const { cid, pid } = req.params;
     
@@ -42,7 +70,7 @@ cartsRoutes.post('/:cid/product/:pid', async (req, res) => {
         let cart = await cartModel.findOne({_id: cid });
         
         if (!cart) {
-            // If cart doesn't exist, create a new one
+            // Si no existe el carrito, creo uno vacío
             cart = new cartModel({products: [] });
         }
 
@@ -60,10 +88,12 @@ cartsRoutes.post('/:cid/product/:pid', async (req, res) => {
         console.error(error);
         res.status(500).send({ message: 'Internal server error' });
     }
-});
+}); */
 
 
 
+
+// ---------------------------   FILE SYSTEM ---------------------------------
 
 // Mis antiguos métodos para manejar los carts con File System:
 

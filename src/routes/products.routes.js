@@ -1,6 +1,7 @@
 import { Router } from 'express';
 /* import { Products } from '../dao/ProductManager.js'; */
-import { productModel } from '../dao/models/product.model.js'
+/* import { productModel } from '../dao/models/products.model.js' */
+import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 
 
 const productsRoutes = Router();
@@ -11,8 +12,16 @@ const productsRoutes = Router();
 
 productsRoutes.get('/', async (req,res) => {
     try {
-        const products = await productModel.find();
-        res.send({products});
+        const { limit = 10, page = 1, query = '', sort = ''} = req.query;
+        const products = new ProductMongoManager();
+        const resultado = await products.getProducts(limit, page, query, sort);
+        if(resultado){
+            res.send(resultado);
+        }
+        else{
+            res.status(400).json({message: 'could not found product'})
+        }
+        /* res.send({products}); */
     } catch (error) {
         console.error(error);
         res.status(400).json({message: "Something went terribly wrong"});        
