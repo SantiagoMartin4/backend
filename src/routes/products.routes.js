@@ -3,6 +3,8 @@ import { Router } from 'express';
 /* import { productModel } from '../dao/models/products.model.js' */
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 
+import { productModel } from '../dao/models/products.model.js';
+
 
 const productsRoutes = Router();
 
@@ -10,43 +12,38 @@ const productsRoutes = Router();
 /* let productsData = new Products('./src/products.json'); */
 
 
-productsRoutes.get('/', async (req,res) => {
+productsRoutes.get('/', async (req, res) => {
     try {
-        const { limit = 10, page = 1, query = '', sort = ''} = req.query;
+        const { limit = 10, page = 1, query = '', sort = '' } = req.query;
         const products = new ProductMongoManager();
         const resultado = await products.getProducts(limit, page, query, sort);
-        if(resultado){
+        if (resultado) {
             res.send(resultado);
         }
-        else{
-            res.status(400).json({message: 'could not found product'})
+        else {
+            res.status(400).json({ message: 'could not found product' })
         }
-        /* res.send({products}); */
     } catch (error) {
         console.error(error);
-        res.status(400).json({message: "Something went terribly wrong"});        
+        res.status(400).json({ message: 'Something went terribly wrong' });
     }
-})
+});
 
-
-
-// get product by Id con mongoose
-
-productsRoutes.get('/:pid', async (req, res) => {
-    let { pid } = req.params;
+productsRoutes.get("/:pId", async (req, res) => {
     try {
-        const products = await productModel.findOne({_id: pid});
-        if(!products){
-            return res.status(404).json({message: 'Cannot find product'});
+        const { pId } = req.params
+        const products = new ProductMongoManager()
+
+        const resultado = await products.getProductById(pId)
+        if (resultado.message === "OK") {
+            return res.status(200).json(resultado)
         }
-        res.send({products});
-    } catch (error) {
-        console.error(error)
-        res.status(400).send({error})
+        res.status(400).json(resultado)
+    }
+    catch (err) {
+        res.status(400).json({ message: "El producto no existe" })
     }
 })
-
-// post product con mongoose
 
 productsRoutes.post('/', async (req, res) => {
     try {
@@ -59,10 +56,82 @@ productsRoutes.post('/', async (req, res) => {
     }
 });
 
+productsRoutes.put('/:pId', async (req, res) => {
+    try {
+        const { pId } = req.params
+        const updateProd = req.body
+        const products = new ProductMongoManager()
+
+        const resultado = await products.updateProduct(pId, updateProd)
+
+        if (resultado.message === "OK") {
+            return res.status(200).json(resultado)
+        }
+        res.status(400).json(resultado)
+    }
+    catch (err) {
+        res.status(400).json({ menssage: 'err' })
+    }
+})
+
+productsRoutes.delete('/:pId', async (req, res) => {
+    try {
+        const { pId } = req.params
+        const products = new ProductMongoManager()
+
+        const deleted = await products.deleteProduct(pId)
+
+        if (deleted.message === "OK")
+            return res.status(200).json(deleted.rdo)
+
+        return res.status(404).json(deleted.rdo)
+    }
+    catch (err) {
+        res.status(400).json({ menssage: err })
+    }
+})
+
+
+
+
+
+
+
+// -------------- Métodos anteriores que funcionaban con la lógica sin separar en ProductMongoManager.js
+
+// get product by Id con mongoose
+/* 
+productsRoutes.get('/:pid', async (req, res) => {
+    let { pid } = req.params;
+    try {
+        const products = await productModel.findOne({_id: pid});
+        if(!products){
+            return res.status(404).json({message: 'Cannot find product'});
+        }
+        res.send({products});
+    } catch (error) {
+        console.error(error)
+        res.status(400).send({error})
+    }
+}) */
+
+// post product con mongoose
+
+/* productsRoutes.post('/', async (req, res) => {
+    try {
+        const newProduct = req.body;
+        const added = await productModel.create(newProduct);
+        res.status(201).json({message: 'Product added'});
+    } catch (error) {
+        console.error({error});
+        res.status(400).json({error})
+    }
+});
+ */
 
 // delete product con mongoose
 
-productsRoutes.delete('/:pid', async (req, res) =>{
+/* productsRoutes.delete('/:pid', async (req, res) =>{
     const { pid } = req.params;
     try {
         const productDeleted = await productModel.deleteOne({_id: pid});
@@ -74,12 +143,12 @@ productsRoutes.delete('/:pid', async (req, res) =>{
         console.log(error);
         res.status(400).send({error});
     }
-});
+}); */
 
 
 // put para actualizar un producto con mongoose
 
-productsRoutes.put('/:pid', async (req, res) => {
+/* productsRoutes.put('/:pid', async (req, res) => {
     const { pid } = req.params;
     const productToUpdate = req.body;
     try {
@@ -93,7 +162,7 @@ productsRoutes.put('/:pid', async (req, res) => {
         res.status(400).send({error});        
     }
 })
-
+ */
 
 
 // Métodos anteriores de products.routes que funcionaban con File System
