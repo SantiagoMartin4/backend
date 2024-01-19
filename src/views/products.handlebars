@@ -1,0 +1,58 @@
+<h1> PRODUCTOS </h1>
+
+{{#each payload}}
+<table>
+    <tr>
+        <th>Title:</th>
+        <td>{{this.title}}</td>
+    </tr>
+    <hr>
+    <tr>
+        <th>Id:</th>
+        <td>{{this._id}}</td>
+    </tr>
+    <hr>
+    <tr>
+        <th>Description:</th>
+        <td>{{this.description}}</td>
+    </tr>
+    <tr>
+        <th>Price:</th>
+        <td>{{this.price}}</td>
+    </tr>
+    <tr>
+        <th>Status:</th>
+        <td>{{this.status}}</td>
+    </tr>
+    <tr>
+        <th>Thumbnail:</th>
+        <td>{{this.thumbnail}}</td>
+    </tr>
+    <tr>
+        <th>Code:</th>
+        <td>{{this.code}}</td>
+    </tr>
+    <tr>
+        <th>Stock:</th>
+        <td>{{this.stock}}</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <button class="addToCartBtn" data-id="{{this._id}}">Agregar al carrito</button>
+        </td>
+    </tr>
+</table>
+{{/each}}
+
+<hr>
+<hr>
+
+{{#if hasPrevPage}}
+<button id="prevBtn">Anterior</button>
+{{/if}}
+
+{{#if hasNextPage}}
+<button id="nextBtn">Siguiente</button>
+{{/if}}
+
+<script src="js/products.js"></script>

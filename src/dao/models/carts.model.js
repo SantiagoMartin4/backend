@@ -23,7 +23,7 @@ export const cartModel = mongoose.model(cartCollection, cartSchema);
 
 
 
-
+//------ BROKEN:
 
 /* const cartSchema = mongoose.Schema({
 id: {
@@ -42,8 +42,6 @@ products: [
 });
 export const cartModel = mongoose.model(cartCollection, cartSchema);
  */
-
-
 
 
 

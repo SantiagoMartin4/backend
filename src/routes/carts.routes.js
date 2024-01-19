@@ -29,7 +29,7 @@ cartsRoutes.get('/', async (req, res) => {
 cartsRoutes.get('/:cid', async (req, res) => {
     let { cid } = req.params;
     try {
-        const cartData = await cartModel.findOne({ _id: cid });
+        const cartData = await cartModel.findOne({ _id: cid }).populate('products.product');
         res.status(200).send({ cartData });
     } catch (error) {
         console.log(error);

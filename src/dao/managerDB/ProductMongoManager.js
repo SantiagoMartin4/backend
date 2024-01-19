@@ -19,7 +19,7 @@ export class ProductMongoManager {
         try {
             const [code, value] = query.split(':');
 
-            const productsParse = await productModel.paginate({ [code]: value }, {
+            const productsParse = await productModel.paginate({[code]: value }, {
                 limit,
                 page,
                 sort: sort ? { price: sort } : {}

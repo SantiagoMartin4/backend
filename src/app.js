@@ -66,7 +66,13 @@ app.use('/api/carts', cartsRoutes);
 
 // Declaro y configuro motor de vistas
 
-app.engine('handlebars', handlebars.engine());
+const hbs = handlebars.create({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true
+    }
+  });
+
+app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
 app.use('/', viewsRoutes);
