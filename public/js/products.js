@@ -1,8 +1,8 @@
-const btns = document.getElementsByTagName('button');
+const btns = document.getElementsByClassName('addToCartBtn');
 
 const addProductToCart = async (pId) => {
     try {
-        const result = await fetch(`http://localhost:8080/api/carts/65a42d08c3a736e56b2c2915/product/${pId}`, {
+        const result = await fetch(`http://localhost:8080/api/carts/65ada20a7b99089d077c5939/product/${pId}`, {
             body: JSON.stringify({
                 quantity: 1
             }),
@@ -20,10 +20,10 @@ const addProductToCart = async (pId) => {
     } catch (error) {
         alert('Error, no se pudo agregar');
     }
-}
+};
 
 for (let btn of btns) {
     btn.addEventListener('click', (event) => {
         addProductToCart(btn.id);
     });
-}
+};

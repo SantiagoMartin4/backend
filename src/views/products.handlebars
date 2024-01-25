@@ -1,4 +1,16 @@
+<h1> Welcome </h1>
+
+<h2> Hi, {{firstName}} {{lastName}} here you will find our products :</h2>
+
+<button id="logoutBtn" type="button">Logout</button>
+
+<script src="js/home.js"></script>
+
+
+
 <h1> PRODUCTOS </h1>
+
+
 
 {{#each payload}}
 <table>
@@ -38,7 +50,7 @@
     </tr>
     <tr>
         <td colspan="2">
-            <button class="addToCartBtn" data-id="{{this._id}}">Agregar al carrito</button>
+            <button class="addToCartBtn" id="{{this._id}}">Agregar al carrito</button>
         </td>
     </tr>
 </table>
@@ -47,12 +59,12 @@
 <hr>
 <hr>
 
+
 {{#if hasPrevPage}}
-<button id="prevBtn">Anterior</button>
+<button><a href="/products?page={{prevPage}}">Anterior</a></button>
 {{/if}}
 
 {{#if hasNextPage}}
-<button id="nextBtn">Siguiente</button>
+<button><a href="/products?page={{nextPage}}">Siguiente</a></button>
 {{/if}}
-
 <script src="js/products.js"></script>
