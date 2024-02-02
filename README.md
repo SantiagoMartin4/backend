@@ -1,7 +1,7 @@
 ### WHAT'S NEW ON MY BACKEND PROJECT?
 
 #### Authentication and Authorization Enhancements
-- Integrated Passport.js library for streamlined authentication strategies, including local authentication and login with GitHub using passport-github2.
+- Integrated Passport.js library ( https://www.npmjs.com/package/passport )for streamlined authentication strategies, including local authentication and login with GitHub using passport-github2 ( https://www.npmjs.com/package/passport-github2 ).
 - Implemented local authentication strategy for registering and logging in users with username and password.
 - Added GitHub authentication strategy to allow users to log in using their GitHub accounts.
 
