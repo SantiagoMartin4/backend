@@ -17,11 +17,15 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 
+// Import de passport
+import passport from 'passport';
+import initializePassport from './config/passport.config.js';
+
+
 const PORT = 8080;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 // Declaro mi carpeta public con static de express
 
 app.use(express.static('public'));
@@ -66,17 +70,18 @@ app.use(session({
     secret: 's4nt1ag0',
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://santimartin:smartin4@smartin.yitodb3.mongodb.net/ecommerce',
-/*         ttl: 15 */
+        /*         ttl: 15 */
     }),
     resave: true,
     saveUninitialized: true
 }));
 
 
-// declaro las rutas usando app.use
-app.use('/', viewsRoutes);
-app.use('/api/products', productsRoutes);
-app.use('/api/carts', cartsRoutes);
+// Declaro la parte de passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Declaro y configuro motor de vistas para que permita pasar prototipos (protoproperties), permite recibir info de mongo sin problemas
 
@@ -94,7 +99,13 @@ app.set('view engine', 'handlebars');
 app.use(cookieParser());
 // Declaro la session necesaria para implementar login de usuario
 
+// declaro las rutas usando app.use
+app.use('/', viewsRoutes);
+app.use('/api/products', productsRoutes);
+app.use('/api/carts', cartsRoutes);
 
 // La declaro despues de la session, y no antes
-app.use('/api/sessions', sessionRoutes)
+app.use('/api/session', sessionRoutes)
+
+
 

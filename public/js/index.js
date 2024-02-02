@@ -35,11 +35,6 @@ socket.on('messageLogs', data => {
     outputData.innerHTML = messages;
 })
 
-
-
-
-
-
 socket.on('getProdsWithSocket', async (products) => { 
     /* console.log('received product data:', products); */
     const productList = document.getElementById('productList');
@@ -51,19 +46,4 @@ socket.on('getProdsWithSocket', async (products) => {
     });
 }); 
 
-
-
-
-// con lo siguiente llegue a un punto muerto
-
-/* import { Products } from '../../src/ProductManager.js';
-
-let productsData = new Products('./src/products.json'); */
-
-/*     const tag = document.getElementById('productsTag').addEventListener('submit', function(event){
-        event.preventDefault();
-    });
-    const prodsData = await productsData.products();
-    const prods = products;
-    tag.innerHTML = prods; */
 

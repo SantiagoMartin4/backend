@@ -44,6 +44,18 @@ viewsRoutes.get('/products', checkAuth, async (req, res) => {
 });
 
 
+viewsRoutes.get('/restore-password', checkExistingUser, (req, res) =>{
+    res.render('restore-password');
+});
+
+viewsRoutes.get('/faillogin', (req,res) => {
+    res.render('faillogin');
+});
+
+viewsRoutes.get('/failregister', (req,res) => {
+    res.render('failregister');
+});
+
 
 
 
