@@ -21,6 +21,9 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 
+// import secret from config
+import { secret } from './config/consts.js';
+
 
 const PORT = 8080;
 const app = express();
@@ -67,10 +70,9 @@ io.on('connection', socket => {
 
 //Declaro la session, siempre antes de las rutas para que se inicialice
 app.use(session({
-    secret: 's4nt1ag0',
+    secret: secret,
     store: MongoStore.create({
         mongoUrl: 'mongodb+srv://santimartin:smartin4@smartin.yitodb3.mongodb.net/ecommerce',
-        /*         ttl: 15 */
     }),
     resave: true,
     saveUninitialized: true
@@ -95,9 +97,9 @@ app.engine('handlebars', hbs.engine);
 app.set('views', 'src/views');
 app.set('view engine', 'handlebars');
 
-
+// config para usar CookieParser
 app.use(cookieParser());
-// Declaro la session necesaria para implementar login de usuario
+
 
 // declaro las rutas usando app.use
 app.use('/', viewsRoutes);

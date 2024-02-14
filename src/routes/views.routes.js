@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-/* import { productModel } from '../dao/models/products.model.js' */
+import { productModel } from '../dao/models/products.model.js'
 
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { checkAuth, checkExistingUser } from '../middlewares/auth.js';
@@ -12,21 +12,19 @@ const viewsRoutes = Router();
 
 const productManager = new ProductMongoManager();
 
-viewsRoutes.get('/', checkAuth, (req, res) => {
-    return res.redirect('/products')
-/*     const products = await productModel.find().lean();
-    res.render('home', {products}); */
+viewsRoutes.get('/', checkAuth, async (req, res) => {
+    const user = req.session.user;
+    const products = await productModel.find().lean();
+    res.render('products', {products, user});
 });
 
 viewsRoutes.get('/login', checkExistingUser, (req,res) => {
-
     res.render('login');    
 });
 
 viewsRoutes.get('/register', checkExistingUser, (req,res) => {
     res.render('register');    
 });
-
 
 
 

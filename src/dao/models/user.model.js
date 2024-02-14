@@ -9,7 +9,6 @@ const userSchema = mongoose.Schema({
     },
     lastName: {
         type: String,
-        required: true,
     },
     email: {
         type: String,
@@ -18,17 +17,20 @@ const userSchema = mongoose.Schema({
     },
     age: {
         type: Number,
-        required: true,
     },
     password: {
         type: String,
         required: true,
     },
-    isAdmin: {
+    role: {
         type: String,
         enum: ["admin", "user"],
         default: "user"
     },
+    cart: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'carts'
+    }
 });
 
 export const userModel = mongoose.model(userCollection, userSchema);
