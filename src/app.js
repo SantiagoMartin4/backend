@@ -24,6 +24,7 @@ import initializePassport from './config/passport.config.js';
 // import secret from config
 import { secret } from './config/consts.js';
 
+import { env } from './config/config.js'; 
 
 const PORT = 8080;
 const app = express();
