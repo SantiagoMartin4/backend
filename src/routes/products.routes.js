@@ -7,7 +7,7 @@ import { addProduct, deleteProduct, getProductById, getProducts, updateProduct }
 const productsRoutes = Router();
 
 productsRoutes.get('/', getProducts)
-productsRoutes.get("/:pId", getProductById)
+productsRoutes.get('/:pId', getProductById)
 productsRoutes.post('/', addProduct)
 productsRoutes.put('/:pId', updateProduct)
 productsRoutes.delete('/:pId', deleteProduct)

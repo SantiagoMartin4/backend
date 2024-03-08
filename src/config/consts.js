@@ -1,1 +1,0 @@
-export const secret = 'S4n714g0'

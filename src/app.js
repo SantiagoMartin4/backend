@@ -21,12 +21,11 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 
-// import secret from config
-import { secret } from './config/consts.js';
+// import port, secret, mongourl from config (dotENV)
+import { getVariables } from './config/config.js'; 
 
-import { env } from './config/config.js'; 
-
-const PORT = 8080;
+const { port, mongoUrl, secret } = getVariables();
+const PORT = port; 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -36,7 +35,7 @@ app.use(express.static('public'));
 
 // Declaro mi conexión con mongoose
 
-mongoose.connect('mongodb+srv://santimartin:smartin4@smartin.yitodb3.mongodb.net/ecommerce');
+mongoose.connect(mongoUrl);
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
@@ -70,10 +69,11 @@ io.on('connection', socket => {
 
 
 //Declaro la session, siempre antes de las rutas para que se inicialice
+
 app.use(session({
     secret: secret,
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://santimartin:smartin4@smartin.yitodb3.mongodb.net/ecommerce',
+        mongoUrl: mongoUrl,
     }),
     resave: true,
     saveUninitialized: true

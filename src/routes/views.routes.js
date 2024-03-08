@@ -54,23 +54,4 @@ viewsRoutes.get('/failregister', (req,res) => {
     res.render('failregister');
 });
 
-
-
-
-
-
-/* viewsRoutes.get('/chat', (req, res) => {
-    res.render('chat', {});
-}); */
-// Código antiguo de la lógica que funcionaba con fs
-
-/* let productsData = new Products('./src/products.json');
-
-viewsRoutes.get('/', async (req, res) => {
-    let products = await productsData.products();
-    res.render('home', {products});
-}); */
-
-
-
 export default viewsRoutes;
