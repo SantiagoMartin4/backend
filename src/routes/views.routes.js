@@ -5,8 +5,6 @@ import { productModel } from '../dao/models/products.model.js'
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { checkAuth, checkExistingUser } from '../middlewares/auth.js';
 
-/* import { Products } from '../dao/ProductManager.js'; */
-
 
 const viewsRoutes = Router();
 
@@ -25,8 +23,6 @@ viewsRoutes.get('/login', checkExistingUser, (req,res) => {
 viewsRoutes.get('/register', checkExistingUser, (req,res) => {
     res.render('register');    
 });
-
-
 
 viewsRoutes.get('/realtimeproducts', (req, res) => {
     res.render('realTimeProducts', {});

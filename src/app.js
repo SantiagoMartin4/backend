@@ -24,21 +24,30 @@ import initializePassport from './config/passport.config.js';
 // import port, secret, mongourl from config (dotENV)
 import { getVariables } from './config/config.js'; 
 
-const { port, mongoUrl, secret } = getVariables();
-const PORT = port; 
+// import command
+import { Command } from 'commander';
+
+/* const { port, mongoUrl, secret } = getVariables(); */
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Declaro mi carpeta public con static de express
-
 app.use(express.static('public'));
+
+
+// uso command
+
+const program = new Command ();
+program.option('--mode <mode>', 'Modo de trabajo', 'production');
+const options = program.parse();
+const { mongoUrl, port, secret } = getVariables(options);
 
 // Declaro mi conexión con mongoose
 
 mongoose.connect(mongoUrl);
 
-const httpServer = app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`);
+const httpServer = app.listen(port, () => {
+    console.log(`Server running on ${port}`);
 });
 
 

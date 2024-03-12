@@ -1,7 +1,10 @@
-
+import UserDTO from '../dao/dtos/user.dto.js';
 import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
+export const getCurrentUser = (req, res) => {
+    const user = asd;
+}
 
 export const register =  async (req, res) => {
     //ahora se maneja todo desde passport (validación y creado en DB), por lo que si pasa mediante middleware toda esa autenticaciòn, solamente mando el send user registered

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { userModel } from "../dao/models/user.model.js";
 import passport from "passport";
-import { register, failedRegister, current, login, logout, restorePassword, githubCallback } from "../controllers/sessionController.js";
+import { register, failedRegister, current, login, logout, restorePassword, githubCallback } from "../controllers/session.controller.js";
 
 const sessionRoutes = Router();
 

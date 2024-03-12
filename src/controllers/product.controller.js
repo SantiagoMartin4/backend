@@ -1,8 +1,13 @@
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { productModel } from '../dao/models/products.model.js';
 
-
-
+/* 
+export class ProductRepository {
+    cibstructor(dao) {
+        this.dao = dao;
+    }
+}
+ */
 export const getProducts = async (req, res) => {
     try {
         const { limit = 10, page = 1, query = '', sort = '' } = req.query;
@@ -38,6 +43,7 @@ export const getProductById = async (req, res) => {
 
 export const addProduct = async (req, res) => {
     try {
+        //se puede implementar aca el DTO, para cuando se verifica que venga con un formato en el body
         const newProduct = req.body;
         const added = await productModel.create(newProduct);
         res.status(201).json({message: 'Product added'});

@@ -3,8 +3,16 @@ import local from 'passport-local';
 import { userModel } from '../dao/models/user.model.js';
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
+import { Command } from "commander";
+import { getVariables } from "./config.js";
 
 const LocalStrategy = local.Strategy;
+
+const program = new Command ();
+program.option('--mode <mode>', 'Modo de trabajo', 'production');
+const options = program.parse();
+const { userAdmin, passAdmin } = getVariables(options);
+
 
 const initializePassport = () => {
     passport.use('register', new LocalStrategy(

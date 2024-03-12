@@ -8,6 +8,15 @@ export const checkAuth = (req, res, next) => {
     next();
 }
 
+export const authorization = (role) => {
+    return async (req, res, next) => {
+        if(req.session?.user?.rol !== role){
+            return res.status(403).send({error: 'Unauthorized'})
+        }
+        next();
+    }
+}
+
 export const checkExistingUser = (req, res, next) => {
     if(req.session.user){
         return res.redirect('/');
@@ -20,7 +29,7 @@ export const checkLogin = async (req,res,next) => {
     try {
         const user = await userModel.findOne({email});
         if(!user || !isValidPassword(user, password)){
-            return res.status(401).send({message: 'Unauthorized'});
+            return res.status(401).redirect('/faillogin');
         }
         req.user = user;
         next();
