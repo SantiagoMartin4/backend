@@ -19,7 +19,7 @@ export const authorization = (role) => {
 
 export const checkExistingUser = (req, res, next) => {
     if(req.session.user){
-        return res.redirect('/');
+        return res.redirect('/products');
     }
     next();
 }

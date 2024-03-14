@@ -10,10 +10,7 @@ const viewsRoutes = Router();
 
 const productManager = new ProductMongoManager();
 
-viewsRoutes.get('/', checkAuth, async (req, res) => {
-    const user = req.session.user;
-    const products = await productModel.find().lean();
-    res.render('products', {products, user});
+viewsRoutes.get('/', checkAuth, (req, res) => {
 });
 
 viewsRoutes.get('/login', checkExistingUser, (req,res) => {

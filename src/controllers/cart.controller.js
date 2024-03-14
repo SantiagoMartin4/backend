@@ -1,8 +1,10 @@
 import { cartModel } from '../dao/models/carts.model.js';
 import { CartMongoManager } from '../dao/managerDB/CartMongoManager.js'
 
+const cartController = new CartMongoManager()
 
 export const getCarts = async (req, res) => {
+    const carts = await cartController.getCarts();
     try {
         const { limit } = req.query;
         const cartData = await cartModel.find().lean();

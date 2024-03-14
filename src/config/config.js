@@ -10,10 +10,9 @@ export const getVariables = (options) => {
         port: process.env.PORT,
         mongoUrl: process.env.MONGO_URL,
         secret: process.env.SECRET_KEY,
-        tokenSecret: process.env.TOKENSECRET,
         userAdmin: process.env.USERADMIN,
         passAdmin: process.env.PASSADMIN,
-        githubClientID: process.env.GITHUB_CLIENT_ID,
-        githubClientPassword: process.env.GITHUB_CLIENT_PASSWORD
+        githubClientId: process.env.GITHUB_CLIENT_ID,
+        githubClientSecret: process.env.GITHUB_CLIENT_SECRET
     }
 }

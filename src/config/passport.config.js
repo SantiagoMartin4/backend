@@ -6,12 +6,14 @@ import { Strategy as GithubStrategy } from "passport-github2";
 import { Command } from "commander";
 import { getVariables } from "./config.js";
 
+
 const LocalStrategy = local.Strategy;
 
-const program = new Command ();
+const program = new Command();
 program.option('--mode <mode>', 'Modo de trabajo', 'production');
 const options = program.parse();
-const { userAdmin, passAdmin } = getVariables(options);
+const { githubClientId, githubClientSecret } = getVariables(options);
+/* const { userAdmin, passAdmin } = getVariables(options); */
 
 
 const initializePassport = () => {
@@ -42,7 +44,7 @@ const initializePassport = () => {
     ));
 
     passport.use('login', new LocalStrategy(
-        {usernameField: 'email' },
+        { usernameField: 'email' },
         async (username, password, done) => {
             try {
                 const user = await userModel.findOne({ email: username });
@@ -59,9 +61,9 @@ const initializePassport = () => {
 
     passport.use('github', new GithubStrategy(
         {
-            clientID: 'Iv1.3b9726fda6634332',
+            clientID: githubClientId,
             callbackURL: 'http://localhost:8080/api/session/githubcallback',
-            clientSecret: '7e67af067cc62ea5eee9501d059c57a7f29317a6'
+            clientSecret: githubClientSecret
         },
         async (accessToken, refreshToken, profile, done) => {
             try {

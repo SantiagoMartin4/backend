@@ -1,6 +1,6 @@
 import { productModel } from "../models/products.model.js";
 
-export class Producto {
+/* export class Producto {
     constructor(title, description, price, code, stock, status, category, thumbnail) {
         this.title = title;
         this.description = description;
@@ -11,10 +11,11 @@ export class Producto {
         this.category = category;
         this.thumbnail = thumbnail;
     }
-}
+} */
 
 
 export class ProductMongoManager {
+
     async getProducts(limit = 10, page = 1, query = '', sort = '') {
         try {
             const [code, value] = query.split(':');
@@ -45,6 +46,16 @@ export class ProductMongoManager {
         }
     }
 
+
+    async addProduct(product) {
+        try {
+            const createProd = await productModel.create(product)
+            return createProd
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
 /*     async addProduct(producto) {
         try {
             let prod = []  

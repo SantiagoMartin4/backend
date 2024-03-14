@@ -3,7 +3,7 @@ import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 
 export const getCurrentUser = (req, res) => {
-    const user = asd;
+    /* const user = asd; */
 }
 
 export const register =  async (req, res) => {
@@ -15,23 +15,31 @@ export const failedRegister = (req, res) => {
     res.status(400).send({ error: 'fail to register' })
 };
 
-export const current = (req, res) => {
-    const user = req.session.user
-    res.render('current', user)
+export const current = async (req, res) => {
+    const userData = req.user;
+    const user = new UserDTO(userData);
+    const currentUser = user.getCurrentUser()
+    res.render('current', currentUser)
 }
 
 export const login = (req, res) => {
     if (!req.user) {
-        return res.status(401).send({ message: 'Invalid credentials' })
+        return res.status(401).send({ message: 'Invalid credentials' }).redirect('/login');
     }
     req.session.user = {
         firstName: req.user.firstName,
         lastName: req.user.lastName,
         age: req.user.age,
-        email: req.user.email
+        email: req.user.email,
+        rol: req.user.rol
     }
     res.redirect('/products');
 };
+
+export const failLogin = (req, res) => {
+    console.log('fail login')
+    res.status(400).send({ error: 'fail to login' })
+} 
 
 export const logout = async (req, res) => {
     try {
@@ -71,5 +79,5 @@ export const restorePassword =  async (req, res) => {
 
 export const githubCallback = (req, res) => {
     req.session.user = req.user
-    res.redirect('/');
+    res.redirect('/products');
 };

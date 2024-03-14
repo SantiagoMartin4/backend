@@ -1,5 +1,6 @@
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { productModel } from '../dao/models/products.model.js';
+import ProductDTO from '../dao/dtos/product.dto.js';
 
 /* 
 export class ProductRepository {
@@ -42,7 +43,13 @@ export const getProductById = async (req, res) => {
 };
 
 export const addProduct = async (req, res) => {
-    try {
+    const newProduct = new ProductDTO(req.body);
+    const addedProduct = await productModel.create(newProduct);
+    if (!addedProduct) {
+        return res.status(400).send({message: "Error adding product"});
+    }
+    return res.status(201).send({message: 'Product added'})
+/*     try {
         //se puede implementar aca el DTO, para cuando se verifica que venga con un formato en el body
         const newProduct = req.body;
         const added = await productModel.create(newProduct);
@@ -50,7 +57,7 @@ export const addProduct = async (req, res) => {
     } catch (error) {
         console.error({error});
         res.status(400).json({error})
-    }
+    } */
 };
 
 export const updateProduct = async (req, res) => {
