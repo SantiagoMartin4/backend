@@ -2,18 +2,12 @@ import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { productModel } from '../dao/models/products.model.js';
 import ProductDTO from '../dao/dtos/product.dto.js';
 
-/* 
-export class ProductRepository {
-    cibstructor(dao) {
-        this.dao = dao;
-    }
-}
- */
+const productController = new ProductMongoManager();
+
 export const getProducts = async (req, res) => {
     try {
         const { limit = 10, page = 1, query = '', sort = '' } = req.query;
-        const products = new ProductMongoManager();
-        const resultado = await products.getProducts(limit, page, query, sort);
+        const resultado = await productController.getProducts(limit, page, query, sort);
         if (resultado) {
             res.send(resultado);
         }
@@ -29,9 +23,7 @@ export const getProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
     try {
         const { pId } = req.params
-        const products = new ProductMongoManager()
-
-        const resultado = await products.getProductById(pId)
+        const resultado = await productController.getProductById(pId)
         if (resultado.message === "OK") {
             return res.status(200).json(resultado)
         }
@@ -64,9 +56,7 @@ export const updateProduct = async (req, res) => {
     try {
         const { pId } = req.params
         const updateProd = req.body
-        const products = new ProductMongoManager()
-
-        const resultado = await products.updateProduct(pId, updateProd)
+        const resultado = await productController.updateProduct(pId, updateProd)
 
         if (resultado.message === "OK") {
             return res.status(200).json(resultado)
@@ -81,9 +71,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { pId } = req.params
-        const products = new ProductMongoManager()
-
-        const deleted = await products.deleteProduct(pId)
+        const deleted = await productController.deleteProduct(pId)
 
         if (deleted.message === "OK")
             return res.status(200).json(deleted.rdo)

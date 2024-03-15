@@ -15,16 +15,27 @@ export class CartMongoManager {
 
     // ------------  GET CARTS
 
+
+    async getCarts() {
+        try {
+            const cartsData = await cartModel.find();
+            return cartsData;
+        } catch (error) {
+            console.error(error);
+            return null
+        }
+    }
+
     async getCartById(id) {
         try {
-            const cart = await cartModel.findOne({ _id: id })
-            if (cart)
-                return { message: 'OK', rdo: cart }
+            const cartData = await cartModel.findOne({ _id: id }).populate('products.product')
+            if (cartData)
+                return cartData
             else
-                return { message: 'ERROR', rdo: 'cannot found cart' }
+                return null
         }
         catch (e) {
-            return { message: 'ERROR', rdo: 'crash while trying to get cart by id' + e.message }
+            return { message: 'Unable to get cart by id'}
         }
     }
 
@@ -32,9 +43,9 @@ export class CartMongoManager {
         try {
             const cart = await cartModel.findOne({ _id: id }).populate('products.product');
             if (cart)
-                return { message: 'OK', rdo: cart.products }
+                return cart.products
             else
-                return { message: 'ERROR', rdo: 'El carrito no existe o no tiene productos' }
+                return {message: 'Cannot get cart by id or empty cart' }
         }
         catch (e) {
             return { message: 'ERROR', rdo: 'Error al obtener los productos del carrito - ' + e.message }
@@ -46,10 +57,10 @@ export class CartMongoManager {
     async addCart(products) {
         try {
             const added = await cartModel.create(products)
-            return { message: "OK", rdo: "Carrito dado de alta correctamente" }
+            return true, { message: 'Empty Cart Added' }
         }
         catch (e) {
-            return { message: "ERROR", rdo: "Error al agregar el carrito." + e.message }
+            return false, { message: "ERROR", rdo: "Error al agregar el carrito." + e.message };
         }
     }
 
