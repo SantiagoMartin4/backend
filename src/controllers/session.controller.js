@@ -1,6 +1,13 @@
 import UserDTO from '../dao/dtos/user.dto.js';
 import { userModel } from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
+import { getVariables } from '../config/config.js'; 
+import { Command } from 'commander';
+
+const program = new Command ();
+program.option('--mode <mode>', 'Modo de trabajo', 'development');
+const options = program.parse();
+const { port } = getVariables(options);
 
 export const getCurrentUser = (req, res) => {
     /* const user = asd; */
@@ -49,7 +56,7 @@ export const logout = async (req, res) => {
             }
         });
         //lo paso con res.send para manejar el redirect desde el front end con un botón
-        res.send({ redirect: 'http://localhost:8080/login' });
+        res.send({ redirect: `http://localhost:${port}/login` });
         //también se puede hacer como en el login 
         // res.redirect('/login')
     } catch (error) {

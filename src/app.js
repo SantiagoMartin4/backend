@@ -27,7 +27,12 @@ import { getVariables } from './config/config.js';
 // import command
 import { Command } from 'commander';
 
-/* const { port, mongoUrl, secret } = getVariables(); */
+// import ErrorHandler
+import { errorHandler } from './middlewares/error.js';
+
+
+
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -38,9 +43,10 @@ app.use(express.static('public'));
 // uso command
 
 const program = new Command ();
-program.option('--mode <mode>', 'Modo de trabajo', 'production');
+program.option('--mode <mode>', 'Modo de trabajo', 'development');
 const options = program.parse();
 const { mongoUrl, port, secret } = getVariables(options);
+
 
 // Declaro mi conexión con mongoose
 
@@ -119,5 +125,6 @@ app.use('/api/carts', cartsRoutes);
 // La declaro despues de la session, y no antes
 app.use('/api/session', sessionRoutes)
 
-
+// declaro el uso de errorHandler
+app.use(errorHandler)
 

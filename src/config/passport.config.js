@@ -5,6 +5,9 @@ import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { Command } from "commander";
 import { getVariables } from "./config.js";
+import customErrors from "../services/errors/customErrors.js";
+import errorEnum from "../services/errors/error.enum.js";
+import { invalidCredentials } from "../services/errors/info.js";
 
 
 const LocalStrategy = local.Strategy;
@@ -27,16 +30,28 @@ const initializePassport = () => {
                     console.log('User already exists');
                     return done(null, false);
                 }
-                const newUser = {
-                    firstName,
-                    lastName,
-                    email,
-                    age,
-                    password: createHash(password)
-                }
-
+                if (username === "adminCoder@coder.com") {
+                    const newAdmin = {
+                        firstName,
+                        lastName,
+                        email,
+                        age,
+                        password: createHash(password),
+                        rol: "admin"
+                    }
+                    const result = await userModel.create(newAdmin);
+                    return done(null, result);
+                }else {
+                    const newUser = {
+                        firstName,
+                        lastName,
+                        email,
+                        age,
+                        password: createHash(password)
+                    }
                 const result = await userModel.create(newUser);
                 return done(null, result);
+            }
             } catch (error) {
                 return done('Error to obtain the user ' + error);
             }
@@ -49,7 +64,12 @@ const initializePassport = () => {
             try {
                 const user = await userModel.findOne({ email: username });
                 if (!user || !isValidPassword(user, password)) {
-                    console.log('Invalid credentials');
+                    customErrors.createError({
+                        name: 'invalid credentials',
+                        cause: invalidCredentials(),
+                        message: 'Error - invalid credentials',
+                        code: errorEnum.USER_NOT_FOUND
+                    });
                     return done(null, false);
                 }
                 return done(null, user);
