@@ -31,6 +31,7 @@ export const current = async (req, res) => {
 
 export const login = (req, res) => {
     if (!req.user) {
+        req.logger.error("Credentials Error");
         return res.status(401).send({ message: 'Invalid credentials' }).redirect('/login');
     }
     req.session.user = {
@@ -40,6 +41,7 @@ export const login = (req, res) => {
         email: req.user.email,
         rol: req.user.rol
     }
+    req.logger.info(`User logged: ${req.user.email}`);
     res.redirect('/products');
 };
 
@@ -52,14 +54,17 @@ export const logout = async (req, res) => {
     try {
         req.session.destroy((error) => {
             if (error) {
+                req.logger.error("Logout failed");
                 return res.status(500).json({ message: 'failed to log out' });
             }
         });
         //lo paso con res.send para manejar el redirect desde el front end con un botón
+        req.logger.info("User logged out");
         res.send({ redirect: `http://localhost:${port}/login` });
         //también se puede hacer como en el login 
         // res.redirect('/login')
     } catch (error) {
+        req.logger.error('Logout Error');
         res.status(400).send({ error })
     }
     //otra forma de hacer el logout es asignando null al req.session.user

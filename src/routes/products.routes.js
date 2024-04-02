@@ -7,11 +7,22 @@ import { authorization } from '../middlewares/auth.js';
 
 const productsRoutes = Router();
 
-productsRoutes.get('/', authorization('user'), getProducts)
+/* productsRoutes.get('/', authorization('user'), getProducts)
 productsRoutes.get('/:pId', authorization('user'), getProductById)
 productsRoutes.post('/', authorization('admin') ,addProduct)
 productsRoutes.put('/:pId', authorization('admin'), updateProduct)
 productsRoutes.delete('/:pId', authorization('admin'), deleteProduct)
+productsRoutes.get('/mocking/mockingproducts', productsMock)
+ */
+
+// PARA USAR CON POSTMAN Y NO TENER QUE REALIZAR AUTH 
+
+
+productsRoutes.get('/', getProducts)
+productsRoutes.get('/:pId', getProductById)
+productsRoutes.post('/', addProduct)
+productsRoutes.put('/:pId', updateProduct)
+productsRoutes.delete('/:pId', deleteProduct)
 productsRoutes.get('/mocking/mockingproducts', productsMock)
 
 

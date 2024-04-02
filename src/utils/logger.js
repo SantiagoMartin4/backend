@@ -2,7 +2,7 @@ import winston from 'winston';
 
 const customLevelOptions = {
     levels: {
-        critical: 0,
+        fatal: 0,
         error: 1,
         warning: 2,
         info: 3,
@@ -28,7 +28,7 @@ const prodLogger = winston.createLogger({
         }),
         new winston.transports.File({
             level: "error",
-            filename: "./prod-errors.log",
+            filename: "./errors.log",
             format: winston.format.simple()
         })
     ]
@@ -39,7 +39,7 @@ export const addLogger = (req, res, next) => {
         case 'development':
             req.logger = devLogger;
             break;
-        case 'production': 
+        case 'production':
             req.logger = prodLogger;
             break;
         default:

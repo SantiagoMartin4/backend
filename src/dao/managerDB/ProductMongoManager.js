@@ -84,11 +84,15 @@ export class ProductMongoManager {
         try {
             const update = await productModel.updateOne({ _id: id }, updateProduct)
 
-            if (update.modifiedCount > 0)
+            if (update.modifiedCount > 0){
                 return { message: "OK", rdo: `Producto con ID ${id} actualizado exitosamente.` }
-            return { message: "ERROR", rdo: `No se encontró un producto con el ID ${id}. No se pudo actualizar.` }
+            }
+            else {
+                return { message: "ERROR", rdo: `No se encontró un producto con el ID ${id}. No se pudo actualizar.` }
+            }
         }
         catch (e) {
+            req.logger.error('Product NOT updated')
             return { message: "ERROR", rdo: "Error al momento de actualizar el producto - " + e.message }
         }
     }

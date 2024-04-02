@@ -30,6 +30,10 @@ import { Command } from 'commander';
 // import ErrorHandler
 import { errorHandler } from './middlewares/error.js';
 
+// import mi middleware de winston logger "addLogger"
+import { addLogger } from './utils/logger.js';
+import testRoutes from './routes/test.routes.js';
+
 
 
 
@@ -38,6 +42,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Declaro mi carpeta public con static de express
 app.use(express.static('public'));
+
+//declaro el uso de logger
+app.use(addLogger)
 
 
 // uso command
@@ -124,6 +131,10 @@ app.use('/api/carts', cartsRoutes);
 
 // La declaro despues de la session, y no antes
 app.use('/api/session', sessionRoutes)
+
+// Declaro ruta de test para el logger
+app.use("/api/test", testRoutes);
+
 
 // declaro el uso de errorHandler
 app.use(errorHandler)
