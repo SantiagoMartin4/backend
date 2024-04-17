@@ -3,8 +3,7 @@ import local from 'passport-local';
 import { userModel } from '../dao/models/user.model.js';
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
-import { Command } from "commander";
-import { getVariables } from "./config.js";
+import { githubClientId, githubClientSecret } from "./config.js";
 import customErrors from "../services/errors/customErrors.js";
 import errorEnum from "../services/errors/error.enum.js";
 import { invalidCredentials } from "../services/errors/info.js";
@@ -12,10 +11,12 @@ import { invalidCredentials } from "../services/errors/info.js";
 
 const LocalStrategy = local.Strategy;
 
-const program = new Command();
-program.option('--mode <mode>', 'Modo de trabajo', 'production');
+
+/* const program = new Command();
+program.option('--mode <mode>', 'Modo de trabajo', 'development');
 const options = program.parse();
-const { githubClientId, githubClientSecret } = getVariables(options);
+const { githubClientId, githubClientSecret } = getVariables(options); */
+
 /* const { userAdmin, passAdmin } = getVariables(options); */
 
 

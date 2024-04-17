@@ -22,10 +22,10 @@ import passport from 'passport';
 import initializePassport from './config/passport.config.js';
 
 // import port, secret, mongourl from config (dotENV)
-import { getVariables } from './config/config.js'; 
+import { mongoUrl, port, secret } from './config/config.js'; 
 
 // import command
-import { Command } from 'commander';
+
 
 // import ErrorHandler
 import { errorHandler } from './middlewares/error.js';
@@ -48,11 +48,11 @@ app.use(addLogger)
 
 
 // uso command
-
+/* 
 const program = new Command ();
 program.option('--mode <mode>', 'Modo de trabajo', 'development');
 const options = program.parse();
-const { mongoUrl, port, secret } = getVariables(options);
+const { mongoUrl, port, secret } = getVariables(options); */
 
 
 // Declaro mi conexión con mongoose
