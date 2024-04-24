@@ -1,12 +1,6 @@
 import mongoose from 'mongoose';
 import { cartModel } from '../models/carts.model.js'
 
-export class productCart {
-    constructor(id, quantity) {
-        this.id = id
-        this.quantity = quantity
-    }
-}
 
 export class CartMongoManager {
     constructor() {

@@ -25,13 +25,19 @@ viewsRoutes.get('/realtimeproducts', (req, res) => {
     res.render('realTimeProducts', {});
 });
 
+// TO DO : SACAR LOGICA DE /PRODUCTS DE ESTE ROUTER. VER BIEN DONDE VA
+
 viewsRoutes.get('/products', checkAuth, async (req, res) => {
-    const { page } = req.query;
+    try {
+            const { page } = req.query;
     const { user } = req.session;
     const productsData = await productManager.getProducts(10, page);
     productsData.firstName = user.firstName;
     productsData.lastName = user.lastName;
     res.render('products', productsData)
+    } catch (error) {
+        console.log(error)
+    }
 });
 
 

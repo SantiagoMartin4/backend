@@ -2,6 +2,26 @@ import { userModel } from "../models/user.model.js";
 
 export class Users {
 
+    async getUsers(){
+        try {
+            const users = await userModel.find();
+            return users
+        } catch (error) {
+            req.logger.error('Cannot get users')
+            throw new Error('Cannot get users');
+        }
+    }
+
+    async getUsersByEmail(email){
+        try {
+            const user = await userModel.findOne({email : email});
+            return user
+        } catch (error) {
+            req.logger.error('Cannot get users')
+            throw new Error('Cannot get users');
+        }
+    }
+
     async updateUser(id, tokenObj){
         try {
             const updated = await userModel.findOneAndUpdate({ _id: id }, { tokenRestore: tokenObj });

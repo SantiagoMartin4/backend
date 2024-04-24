@@ -1,29 +1,16 @@
 import { Router } from 'express';
 import { addProduct, deleteProduct, getProductById, getProducts, productsMock, updateProduct } from '../controllers/product.controller.js';
-import { authorization } from '../middlewares/auth.js';
-
-
+import {roleAuth } from '../middlewares/auth.js';
 
 
 const productsRoutes = Router();
 
-productsRoutes.get('/', authorization('user'), getProducts)
-productsRoutes.get('/:pId', authorization('user'), getProductById)
-productsRoutes.post('/', authorization('admin') ,addProduct)
-productsRoutes.put('/:pId', authorization('admin'), updateProduct)
-productsRoutes.delete('/:pId', authorization('admin'), deleteProduct)
+productsRoutes.get('/', roleAuth(['admin', 'user', 'premium']), getProducts)
+productsRoutes.get('/:pId', roleAuth(['admin', 'user', 'premium']), getProductById)
+productsRoutes.post('/', roleAuth(['admin', 'premium']), addProduct)
+productsRoutes.put('/:pId', roleAuth(['admin']), updateProduct)
+productsRoutes.delete('/:pId', roleAuth(['admin', 'premium']), deleteProduct)
 productsRoutes.get('/mocking/mockingproducts', productsMock)
-
-
-// PARA USAR CON POSTMAN Y NO TENER QUE REALIZAR AUTH 
-
-
-/* productsRoutes.get('/', getProducts)
-productsRoutes.get('/:pId', getProductById)
-productsRoutes.post('/', addProduct)
-productsRoutes.put('/:pId', updateProduct)
-productsRoutes.delete('/:pId', deleteProduct)
-productsRoutes.get('/mocking/mockingproducts', productsMock) */
 
 
 export default productsRoutes;

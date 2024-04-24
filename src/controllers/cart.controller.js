@@ -35,7 +35,6 @@ export const getCartById = async (req, res) => {
     }
 };
 
-//------------------ LÓGICA DE CART MANAGER CON MONGOOSE SEPARADO EN CART MONGO MANAGER:
 
 //--------- POST  -  Añadir carrito Vacío
 
@@ -56,12 +55,79 @@ export const addCart = async (req, res) => {
 };
 
 // --------------- 
-
 export const addProductsInCart = async (req, res) => {
+    try {
+        const { cId, pId } = req.params;
+        const { quantity } = req.body;
+        const cartData = await cartController.getCartById(cId);
+        console.log(req.user.email);
+
+        // Verificar si el usuario es premium
+        if (req.user.role === 'premium') {
+            let checkForProductInCart = cartData.products.find(p => p.product._id.toString() === pId);
+            // Si el producto está en el carrito y pertenece al usuario premium, retornar un error
+            if (checkForProductInCart && checkForProductInCart.product.owner === req.user.email) {
+                return res.status(403).send({ message: 'Unauthorized' });
+            }
+        }
+
+        // Verificar si el producto no está en el carrito
+        if (typeof checkForProductInCart === 'undefined') {
+            // Agregar el producto al carrito con la cantidad recibida del cuerpo de la solicitud
+            cartData.products.push({ product: pId, quantity: quantity });
+        } else {
+            // Si el producto ya está en el carrito, aumentar la cantidad sumando la cantidad recibida por el body
+            checkForProductInCart.quantity += quantity;
+        }
+
+        // Guardar los cambios en el carrito
+        await cartData.save();
+
+        req.logger.info('Cart updated');
+        return res.send({ message: 'Cart updated' });
+    } catch (error) {
+        req.logger.error(error.message);
+        return res.status(500).send({ error: error.message });
+    }
+};
+
+
+
+/* 
+export const addProductsInCart = async (req, res) => {
+    const { cId, pId } = req.params;
+    const cartData = await cartController.getCartById(cId);
+    // veo si ya existe un producto con ese id en el carrito... si no hay devuelve undefined
+    console.log(cartData)
+    const checkForProductInCart = cartData.products.find(p => p.product._id.toString() === pId);
+    console.log(checkForProductInCart)
+    if (req.user.role === 'premium') {
+        const checkForProductInCart = cartData.products.find(p => p.product._id.toString() === pId);
+        if (checkForProductInCart.product.owner === req.user.email) {
+            return res.status(403).send({ message: 'Unauthorized' })
+        }
+    }
+    if (checkForProductInCart) {
+        checkForProductInCart.quantity++;
+    } else {
+        cartData.products.push({ product: pId });
+    }
+    await cartData.save();
+    if (!cartData) {
+        req.logger.error('cart not found');
+        return res.status(404).send({ message: 'error: cart not found' });
+    }
+    req.logger.info('Cart updated');
+    return res.send({ message: 'cart updated' })
+};
+ */
+
+/* export const addProductsInCart = async (req, res) => {
     try {
         const { cId, pId } = req.params;
         const newQuantity = req.body.quantity;
         const addProdInCart = await cartController.addProductsInCart(cId, pId, newQuantity);
+        console.log(addProdInCart)
         if (addProdInCart) {
             req.logger.info('Product added to Cart')
             return res.status(200).json({ message: 'Product added' });
@@ -73,7 +139,7 @@ export const addProductsInCart = async (req, res) => {
         req.logger.error('Product not added to cart')
         res.status(400).send({ err });
     }
-};
+}; */
 
 //--- DELETE   -  Eliminar todos los productos del carrito
 

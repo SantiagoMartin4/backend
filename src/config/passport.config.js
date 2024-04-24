@@ -38,7 +38,7 @@ const initializePassport = () => {
                         email,
                         age,
                         password: createHash(password),
-                        rol: "admin"
+                        role: "admin"
                     }
                     const result = await userModel.create(newAdmin);
                     return done(null, result);
@@ -65,13 +65,15 @@ const initializePassport = () => {
             try {
                 const user = await userModel.findOne({ email: username });
                 if (!user || !isValidPassword(user, password)) {
-                    customErrors.createError({
+/*                     customErrors.createError({
                         name: 'invalid credentials',
                         cause: invalidCredentials(),
                         message: 'Error - invalid credentials',
                         code: errorEnum.USER_NOT_FOUND
-                    });
-                    return done(null, false);
+                    }); 
+                        
+                    return done(null, false);*/
+                    return done(null, false, {message: 'Invalid credentials'});
                 }
                 return done(null, user);
             } catch (error) {

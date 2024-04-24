@@ -1,5 +1,4 @@
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
-/* import { productModel } from '../dao/models/products.model.js'; */
 import ProductDTO from '../dao/dtos/product.dto.js';
 import customErrors from '../services/errors/customErrors.js';
 import errorEnum from '../services/errors/error.enum.js';
@@ -31,16 +30,12 @@ export const getProductById = async (req, res) => {
     try {
         const { pId } = req.params
         const resultado = await productController.getProductById(pId)
-/*         if (resultado.message === "OK") {
-            req.logger.info('Products found')
-            return res.status(200).json(resultado)
-        } */
-        req.logger.info('Products found')
+        req.logger.info('Product found')
         res.status(200).json(resultado)
     }
     catch (err) {
         req.logger.error('Products NOT found')
-        res.status(400).json({ message: "El producto no existe" })
+        res.status(400).json({ message: 'cannot find product' })
     }
 };
 
@@ -54,13 +49,18 @@ export const addProduct = async (req, res) => {
             code: errorEnum.INVALID_TYPE_ERROR
         });
     }
+    const userRole = req.user.role
+    console.log(userRole);
+    if (userRole === 'premium') {
+        newProduct.owner = req.user.email;
+    }
     const addedProduct = await productController.addProduct(newProduct);
     if (!addedProduct) {
         req.logger.error('Products NOT added')
-        return res.status(400).send({message: "Error adding product"});
+        return res.status(400).send({ message: 'Error adding product' });
     }
     req.logger.info('Products added')
-    return res.status(201).send({message: 'Product added'})
+    return res.status(201).send({ message: 'Product added' })
 };
 
 export const updateProduct = async (req, res) => {
@@ -73,7 +73,7 @@ export const updateProduct = async (req, res) => {
             req.logger.info('Products updated')
             return res.status(200).json(resultado)
         }
-/*         res.status(200).json(resultado) */
+        /*         res.status(200).json(resultado) */
     }
     catch (err) {
         req.logger.error('Product not updated')
@@ -84,13 +84,18 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
     try {
         const { pId } = req.params
+        const product = await productController.getProductById(pId);
+        const productOwner = product.rdo.owner
+        if (req.user.role === 'premium' && product.rdo.owner !== req.user.email) {
+            return res.status(403).send({ message: 'Unauthorized' });
+        }
         const deleted = await productController.deleteProduct(pId)
 
-/*         if (deleted.message === "OK")
-            return res.status(200).json(deleted.rdo)
- */
-        req.logger.info('Product deleted')
-        return res.status(200).json(deleted)
+        if (deleted.message === "OK") {
+            req.logger.info('Product deleted')
+        }
+        return res.status(200).json(deleted.rdo)
+        /*         return res.status(200).json(deleted) */
     }
     catch (err) {
         req.logger.error('Product NOT deleted')
@@ -100,9 +105,9 @@ export const deleteProduct = async (req, res) => {
 
 export const productsMock = (req, res) => {
     const users = [];
-    for(let i=0; i<100; i++){
+    for (let i = 0; i < 100; i++) {
         users.push(generateProduct())
     }
     req.logger.info('products MOCK')
-    res.send({status: 'success', payload: users})
+    res.send({ status: 'success', payload: users })
 }

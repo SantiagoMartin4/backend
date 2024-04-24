@@ -33,8 +33,10 @@ import { errorHandler } from './middlewares/error.js';
 // import mi middleware de winston logger "addLogger"
 import { addLogger } from './utils/logger.js';
 import testRoutes from './routes/test.routes.js';
+// import de flash
+import flash from 'express-flash';
 
-
+import usersRoutes from './routes/users.routes.js'
 
 
 const app = express();
@@ -101,6 +103,8 @@ app.use(session({
     saveUninitialized: true
 }));
 
+// Configuro express-flash (lo estoy usando para redirigir desde passport en caso de login fallido)
+app.use(flash());
 
 // Declaro la parte de passport
 initializePassport();
@@ -133,7 +137,10 @@ app.use('/api/carts', cartsRoutes);
 app.use('/api/session', sessionRoutes)
 
 // Declaro ruta de test para el logger
-app.use("/api/test", testRoutes);
+app.use('/api/test', testRoutes);
+
+// Declaro ruta de users para premium
+app.use('/api/users', usersRoutes)
 
 
 // declaro el uso de errorHandler

@@ -10,6 +10,7 @@ export const generateProductErrorInfo = (product) => {
         `;
 }
 
+// Invalid credentials... actualmente no lo utilizo (se usaba en la parte de passport.config.js) dado que me pisa la redirección que hago con flash
 export const invalidCredentials = () => {
     return 'Invalid credentials';
 }

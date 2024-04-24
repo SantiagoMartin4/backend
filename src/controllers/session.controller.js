@@ -32,10 +32,11 @@ export const current = async (req, res) => {
 }
 
 export const login = (req, res) => {
-    if (!req.user) {
-        req.logger.error("Credentials Error");
-        return res.status(401).send({ message: 'Invalid credentials' }).redirect('/login');
-    }
+    /* if (!req.user) {
+        req.flash('error', 'Invalid credentials'); // Establece el mensaje flash de error
+        return res.status(401).redirect('/faillogin');
+        return res.status(401).send({ message: req.flash('error') }).redirect('/faillogin'); 
+    }*/
     req.session.user = {
         firstName: req.user.firstName,
         lastName: req.user.lastName,
@@ -47,10 +48,13 @@ export const login = (req, res) => {
     res.redirect('/products');
 };
 
-export const failLogin = (req, res) => {
-    console.log('fail login')
-    res.status(400).send({ error: 'fail to login' })
-}
+/* export const failLogin = (req, res) => {
+    console.log('La función failLogin se ha ejecutado correctamente')
+    console.log('Contenido de la sesión:', req.session);
+    const errorMessage = req.flash('error')[0];
+    req.logger.info('errorMessage');
+    res.status(400).send({ error: errorMessage }) 
+}*/
 
 export const logout = async (req, res) => {
     try {
@@ -86,7 +90,7 @@ export const forgotPassword = async (req, res) => {
         const user = await userModel.findOne({ email });
         if (!user) {
             const invalidUser = true;
-            return res.render('forgot-password', {invalidUser})
+            return res.render('forgot-password', { invalidUser })
         }
         await userService.updateUser(user._id, tokenObj);
         // Enviar el correo electrónico con el enlace que contiene el token
@@ -136,12 +140,12 @@ export const restorePasswordToken = async (req, res) => {
     try {
         const { token } = req.params;
         // Obtener el usuario utilizando el token
-        
+
         const user = await userService.getUserByToken(token);
-/*         if (user === null || user === undefined) {
-            const wrong = true;
-            return res.render("forgot-password", { wrong });
-        } */
+        /*         if (user === null || user === undefined) {
+                    const wrong = true;
+                    return res.render("forgot-password", { wrong });
+                } */
         // Acceder directamente al token dentro de tokenRestore
         const tokenObj = user.tokenRestore;
         if (tokenObj && verifyToken(tokenObj)) {
@@ -159,7 +163,7 @@ export const restorePasswordToken = async (req, res) => {
 
 
 export const restorePassword = async (req, res) => {
-/*     const { token } = req.params;  */
+    /*     const { token } = req.params;  */
     const { email, password } = req.body;
 
     try {
@@ -173,11 +177,11 @@ export const restorePassword = async (req, res) => {
         /* if (password === user.password) { */
         if (isValidPassword(user, password)) {
             const passwordRepeat = true;
-            return res.render('restore-password', { passwordRepeat});
+            return res.render('restore-password', { passwordRepeat });
         }
         // Actualizar la contraseña del usuario y eliminar el token utilizado
         user.password = createHash(password);
-/*         user.tokenRestore = null; // Eliminar el token */
+        /*         user.tokenRestore = null; // Eliminar el token */
         await user.save();
         req.logger.info('password successfully changed')
         res.redirect('/login')
