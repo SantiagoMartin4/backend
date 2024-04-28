@@ -17,7 +17,6 @@ paths:
           description: Los usuarios no se han obtenido debido a un error
 
 components:
-
   schemas:
     User:
       type: object
