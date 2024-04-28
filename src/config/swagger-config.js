@@ -9,4 +9,3 @@ export const swaggerConfiguration = {
     apis: ['src/docs/**/*.yaml']
 }
 
-/* import asd from '../docs/Products/' */
