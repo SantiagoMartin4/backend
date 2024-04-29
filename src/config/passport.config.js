@@ -7,17 +7,16 @@ import { githubClientId, githubClientSecret } from "./config.js";
 import customErrors from "../services/errors/customErrors.js";
 import errorEnum from "../services/errors/error.enum.js";
 import { invalidCredentials } from "../services/errors/info.js";
+import { CartMongoManager } from '../dao/managerDB/CartMongoManager.js'
+
+
+const cartController = new CartMongoManager()
+
+
 
 
 const LocalStrategy = local.Strategy;
 
-
-/* const program = new Command();
-program.option('--mode <mode>', 'Modo de trabajo', 'development');
-const options = program.parse();
-const { githubClientId, githubClientSecret } = getVariables(options); */
-
-/* const { userAdmin, passAdmin } = getVariables(options); */
 
 
 const initializePassport = () => {
@@ -42,22 +41,28 @@ const initializePassport = () => {
                     }
                     const result = await userModel.create(newAdmin);
                     return done(null, result);
-                }else {
+                } else {
+                    const newCart = await cartController.addCart();
+                    console.log(newCart); 
                     const newUser = {
                         firstName,
                         lastName,
                         email,
                         age,
-                        password: createHash(password)
+                        password: createHash(password),
+                        cart: newCart._id 
                     }
-                const result = await userModel.create(newUser);
-                return done(null, result);
-            }
+                    console.log(newUser);
+                    const result = await userModel.create(newUser);
+                    return done(null, result);
+                }
             } catch (error) {
-                return done('Error to obtain the user ' + error);
+                return done('Error while registering user' + error);
             }
         }
     ));
+}
+
 
     passport.use('login', new LocalStrategy(
         { usernameField: 'email' },
@@ -119,6 +124,6 @@ const initializePassport = () => {
         const user = await userModel.findOne({ _id: id });
         done(null, user);
     });
-}
+
 
 export default initializePassport;

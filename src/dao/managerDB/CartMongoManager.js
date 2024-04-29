@@ -46,18 +46,19 @@ export class CartMongoManager {
         }
     }
 
-    // ------------  ADD PRODUCTS TO CART
+    // ------------  ADD CART & ADD PRODUCTS TO CART
+
 
     async addCart(products) {
         try {
-            const added = await cartModel.create(products)
-            return true, { message: 'Empty Cart Added' }
-        }
-        catch (e) {
-            return false, { message: "ERROR", rdo: "Error al agregar el carrito." + e.message };
+            const added = await cartModel.create(products);
+            return added;
+        } catch (e) {
+            console.error("Error al agregar el carrito:", e);
+            throw new Error("Error al agregar el carrito: " + e.message);
         }
     }
-
+    
 
     async addProductsInCart(cId, pId, quantity) {
         try {

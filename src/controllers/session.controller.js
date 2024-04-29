@@ -32,29 +32,32 @@ export const current = async (req, res) => {
 }
 
 export const login = (req, res) => {
-    /* if (!req.user) {
+    if (!req.user) {
+/*         return res.status(400).send({message: 'Invalid credentials'}) */
         req.flash('error', 'Invalid credentials'); // Establece el mensaje flash de error
-        return res.status(401).redirect('/faillogin');
+/*         return res.status(401).redirect('/faillogin'); */
         return res.status(401).send({ message: req.flash('error') }).redirect('/faillogin'); 
-    }*/
+    }
     req.session.user = {
         firstName: req.user.firstName,
         lastName: req.user.lastName,
         age: req.user.age,
         email: req.user.email,
-        rol: req.user.rol
+        role: req.user.role,
+        cart: req.user.cart
     }
+    console.log(req.session.user)
     req.logger.info(`User logged: ${req.user.email}`);
     res.redirect('/products');
 };
 
-/* export const failLogin = (req, res) => {
+export const failLogin = (req, res) => {
     console.log('La función failLogin se ha ejecutado correctamente')
     console.log('Contenido de la sesión:', req.session);
     const errorMessage = req.flash('error')[0];
     req.logger.info('errorMessage');
     res.status(400).send({ error: errorMessage }) 
-}*/
+}
 
 export const logout = async (req, res) => {
     try {

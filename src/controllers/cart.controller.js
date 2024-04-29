@@ -39,14 +39,12 @@ export const getCartById = async (req, res) => {
 //--------- POST  -  Añadir carrito Vacío
 
 export const addCart = async (req, res) => {
-
     try {
         const addCart = await cartController.addCart({ products: [] })
         if (addCart) {
             req.logger.info('Cart added')
             return res.status(200).json(addCart)
         }
-        res.status(400).json(resultado)
     }
     catch (err) {
         req.logger.error('Cart not added')
