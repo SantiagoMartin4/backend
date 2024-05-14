@@ -1,0 +1,321 @@
+
+/* Estilos para el encabezado principal */
+h1 {
+    font-size: 4rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+.css-button-3d--red {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    background: #ef233c;
+    box-shadow: 0 5px #d90429;
+  }
+  .css-button-3d--red:hover {
+    box-shadow: 0 3px #d90429;
+    top: 1px;
+  }
+  .css-button-3d--red:active {
+    box-shadow: 0 0 #d90429;
+    top: 5px;
+  }
+
+  .css-button-3d--green {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    background: #80ed99;
+    box-shadow: 0 5px #57cc99;
+  }
+  .css-button-3d--green:hover {
+    box-shadow: 0 3px #57cc99;
+    top: 1px;
+  }
+  .css-button-3d--green:active {
+    box-shadow: 0 0 #57cc99;
+    top: 5px;
+  }
+/* Estilos para el contenedor de productos */
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+/* Estilos para cada producto */
+.product {
+    width: 30%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.product p {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+.product img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.product button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.product button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Estilos para el encabezado del carrito */
+.cart-header {
+    font-size: 36px;
+    color: #20221e;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la tabla del carrito */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Estilos para las celdas del encabezado de la tabla */
+.cart-table th {
+    font-size: 1.5rem;
+    padding: 10px;
+    background-color: #f0f0f0;
+    text-align: left;
+}
+
+/* Estilos para las celdas de los datos de la tabla */
+.cart-table td {
+    font-size: 1.2rem;
+    padding: 10px;
+    border-bottom: 1px solid #878787;
+}
+
+/* Estilos para las imágenes en el carrito */
+.cart-image {
+    max-width: 100px;
+    height: auto;
+}
+
+/* Estilos para el precio total */
+.cart-total-price {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Estilos para la línea horizontal */
+.cart-hr {
+    border: none;
+    border-top: 1px solid #cab15d;
+    margin: 10px 0;
+}
+
+
+.css-button-retro--yellow {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border: 1px solid #000;
+    color: #000;
+    background: transparent;
+    z-index: 0;
+  }
+  .css-button-retro--yellow:hover:after {
+    top: 0;
+    left: 0;
+  }
+  .css-button-retro--yellow:after {
+    content: "";
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    top: 5px;
+    left: 5px;
+    transition: 0.2s;
+    background-color: #ffe566;
+  }
+
+  .css-button-retro--yellow a {
+    font-size: 1.4rem;
+  }
+  .css-button-retro--sky {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border: 1px solid #000;
+    color: #000;
+    background: transparent;
+    z-index: 0;
+  }
+  .css-button-retro--sky:hover:after {
+    top: 0;
+    left: 0;
+  }
+  .css-button-retro--sky:after {
+    content: "";
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    top: 5px;
+    left: 5px;
+    transition: 0.2s;
+    background-color: #3a86ff;
+  }
+
+
+  /* Estilos para el encabezado */
+.login-header {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el formulario de inicio de sesión */
+.login-form {
+    margin-bottom: 20px;
+}
+
+/* Estilos para las etiquetas del formulario */
+.login-form label {
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Estilos para los campos de entrada del formulario */
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+/* Estilos para los botones del formulario */
+.login-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Estilos para los enlaces dentro del formulario */
+.login-form a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Estilos para el botón de registro */
+.register-button {
+    padding: 10px 20px;
+    background-color: #94db93;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+
+/* parte de register form*/
+
+/* Estilos para el encabezado */
+.register-header {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el formulario de registro */
+.register-form {
+    margin-bottom: 20px;
+}
+
+/* Estilos para las etiquetas del formulario */
+.register-form label {
+    font-size: 1.3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Estilos para los campos de entrada del formulario */
+.register-form input[type="text"],
+.register-form input[type="number"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el botón de registro */
+.register-form button {
+    padding: 10px 20px;
+    background-color: #94db93;
+    color: #000000;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Estilos para el enlace "Login" */
+.register-form a {
+    
+    color: #000000;
+    text-decoration: none;
+}

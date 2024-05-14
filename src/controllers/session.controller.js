@@ -46,7 +46,6 @@ export const login = (req, res) => {
         role: req.user.role,
         cart: req.user.cart
     }
-    console.log(req.session.user)
     req.logger.info(`User logged: ${req.user.email}`);
     res.redirect('/products');
 };
@@ -116,29 +115,7 @@ export const forgotPassword = async (req, res) => {
     }
 };
 
-/* export const restorePasswordToken = async (req, res) => {
-    try {
-        const { token } = req.params;
-        // Obtener el usuario utilizando el token
-        const user = await userService.getUserByToken(token);
-        console.log(user, 'aca');
-        if (!user) {
-            const wrong = true;
-            return res.render("forgot-password", { wrong });
-        }
-        const tokenObj = user.tokenRestore;
-        if (tokenObj && verifyToken(tokenObj)) {
-            res.redirect('/restore-password')
-        }
-        else {
-            const wrong = true;
-            return res.render("forgot-password", { wrong });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(400).json({ error: 'Error while restoring passwork with token' });
-    }
-}; */
+
 export const restorePasswordToken = async (req, res) => {
     try {
         const { token } = req.params;
@@ -194,24 +171,6 @@ export const restorePassword = async (req, res) => {
     }
 };
 
-/* 
-export const restorePassword =  async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await userModel.findOne({ email });
-        if (!user) {
-            return res.status(400).send({ message: 'Unauthorized' });
-        }
-        user.password = createHash(password);
-        await user.save();
-        res.send({ message: 'Password has been updated' });
-    }
-    catch (error) {
-        console.error(error);
-        res.status(400).send({ error })
-    }
-};
- */
 
 
 

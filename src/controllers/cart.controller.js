@@ -2,6 +2,7 @@ import { CartMongoManager } from '../dao/managerDB/CartMongoManager.js'
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { TicketMongoManager } from '../dao/managerDB/TicketMongoManager.js';
 
+
 const cartController = new CartMongoManager()
 const productController = new ProductMongoManager();
 const ticketController = new TicketMongoManager();
@@ -36,6 +37,16 @@ export const getCartById = async (req, res) => {
 };
 
 
+export const getUserCart = async (cId) => {
+    try {
+        const userCart = await cartController.getCartById(cId);
+        const totalPrice = userCart.products.reduce((total, product) => total + product.product.price, 0);
+        return { userCart, totalPrice };
+    } catch (error) {
+        throw new Error('Error obtaining user cart');
+    }
+};
+
 //--------- POST  -  Añadir carrito Vacío
 
 export const addCart = async (req, res) => {
@@ -58,8 +69,6 @@ export const addProductsInCart = async (req, res) => {
         const { cId, pId } = req.params;
         const { quantity } = req.body;
         const cartData = await cartController.getCartById(cId);
-        console.log(req.user.email);
-
         // Verificar si el usuario es premium
         if (req.user.role === 'premium') {
             let checkForProductInCart = cartData.products.find(p => p.product._id.toString() === pId);
@@ -90,54 +99,6 @@ export const addProductsInCart = async (req, res) => {
 };
 
 
-
-/* 
-export const addProductsInCart = async (req, res) => {
-    const { cId, pId } = req.params;
-    const cartData = await cartController.getCartById(cId);
-    // veo si ya existe un producto con ese id en el carrito... si no hay devuelve undefined
-    console.log(cartData)
-    const checkForProductInCart = cartData.products.find(p => p.product._id.toString() === pId);
-    console.log(checkForProductInCart)
-    if (req.user.role === 'premium') {
-        const checkForProductInCart = cartData.products.find(p => p.product._id.toString() === pId);
-        if (checkForProductInCart.product.owner === req.user.email) {
-            return res.status(403).send({ message: 'Unauthorized' })
-        }
-    }
-    if (checkForProductInCart) {
-        checkForProductInCart.quantity++;
-    } else {
-        cartData.products.push({ product: pId });
-    }
-    await cartData.save();
-    if (!cartData) {
-        req.logger.error('cart not found');
-        return res.status(404).send({ message: 'error: cart not found' });
-    }
-    req.logger.info('Cart updated');
-    return res.send({ message: 'cart updated' })
-};
- */
-
-/* export const addProductsInCart = async (req, res) => {
-    try {
-        const { cId, pId } = req.params;
-        const newQuantity = req.body.quantity;
-        const addProdInCart = await cartController.addProductsInCart(cId, pId, newQuantity);
-        console.log(addProdInCart)
-        if (addProdInCart) {
-            req.logger.info('Product added to Cart')
-            return res.status(200).json({ message: 'Product added' });
-        }
-        req.logger.error('Product not added to Cart')
-        res.status(400).json({ message: 'could not add product' });
-    }
-    catch (err) {
-        req.logger.error('Product not added to cart')
-        res.status(400).send({ err });
-    }
-}; */
 
 //--- DELETE   -  Eliminar todos los productos del carrito
 

@@ -20,9 +20,9 @@ export class CartMongoManager {
         }
     }
 
-    async getCartById(id) {
+    async getCartById(cId) {
         try {
-            const cartData = await cartModel.findOne({ _id: id }).populate('products.product')
+            const cartData = await cartModel.findOne({ _id: cId }).populate('products.product')
             if (cartData)
                 return cartData
             else

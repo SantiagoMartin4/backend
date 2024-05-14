@@ -1,0 +1,30 @@
+<h1 class="cart-header">This is your cart</h1>
+<table class="cart-table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each cartData.userCart.products}}
+            <tr>
+                <td>{{this.product.title}}</td>
+                <td>{{this.product.description}}</td>
+                <td><img class="cart-image" src="{{this.product.image}}" alt="{{this.product.title}}"></td>
+                <td>{{this.product.price}}</td>
+            </tr>
+            <tr>
+                <td colspan="4"><hr class="cart-hr"></td>
+            </tr>
+        {{/each}}
+        <tr>
+            <td colspan="3"><strong class="cart-total-price">Total Price:</strong></td>
+            <td class="cart-total-price">{{cartData.totalPrice}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="css-button-retro--sky"><a href="/products">Back to products</a></button>

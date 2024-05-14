@@ -1,18 +1,21 @@
-<h1> USER LOGIN </h1>
+<h1 class="login-header">USER LOGIN</h1>
 
-<form action="/api/session/login" method="post">
-    <label for="">Email:</label> <input type="email" name="email" /> <br /> <br />
-    <label for="">Password:</label> <input type="password" name="password" /> <br /> <br />
+<form class="login-form" action="/api/session/login" method="post">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required />
+    <br>
     <button type="submit">Login</button>
-    <button type="button"><a href="/api/session/github">Login with git GitHub</a>Login</button>
+    <br>
+    <br>
+    <button type="button"><a href="/api/session/github">Login with GitHub</a></button>
 
     <button type="button"><a href="/restore-password">Restore my Password</a></button>
     <button type="button"><a href="/forgot-password">Forgot my Password</a></button>
 </form>
 
-<br /> <br />
-<br /> <br />
-
 <form action="/register" method="get">
-    <button type="submit">OR REGISTER</button>
+    <button class="register-button" type="submit">OR REGISTER</button>
 </form>

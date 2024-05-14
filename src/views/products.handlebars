@@ -1,69 +1,37 @@
-<h1> Welcome </h1>
+<h1> Welcome to our store</h1>
 
 <h2> Hi, {{firstName}} {{lastName}} here you will find our products :</h2>
 
-<button id="logoutBtn" type="button">Logout</button>
+<button id="logoutBtn" class="css-button-3d--red" type="button">Logout</button>
 
-<script src="js/home.js"></script>
+<!-- Elemento oculto para almacenar cId -->
+<input type="hidden" id="userCart" value="{{userCart}}">
+
+<!-- Botón para redireccionar hacia la vista del carrito -->
+<button class="css-button-3d--green"><a href="/cart">Show Cart</a></button>
 
 
-<h3> PRODUCTS </h3>
 
 
+<h3>PRODUCTS</h3>
 
-{{#each payload}}
-<table>
-    <tr>
-        <th>Title:</th>
-        <td>{{this.title}}</td>
-    </tr>
-    <hr>
-    <tr>
-        <th>Id:</th>
-        <td>{{this._id}}</td>
-    </tr>
-    <hr>
-    <tr>
-        <th>Description:</th>
-        <td>{{this.description}}</td>
-    </tr>
-    <tr>
-        <th>Price:</th>
-        <td>{{this.price}}</td>
-    </tr>
-    <tr>
-        <th>Status:</th>
-        <td>{{this.status}}</td>
-    </tr>
-    <tr>
-        <th>Thumbnail:</th>
-        <td>{{this.thumbnail}}</td>
-    </tr>
-    <tr>
-        <th>Code:</th>
-        <td>{{this.code}}</td>
-    </tr>
-    <tr>
-        <th>Stock:</th>
-        <td>{{this.stock}}</td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <button class="addToCartBtn" id="{{this._id}}">Agregar al carrito</button>
-        </td>
-    </tr>
-</table>
-{{/each}}
-
-<hr>
-<hr>
-
+<div class="product-container">
+    {{#each payload}}
+        <div class="product">
+            <h2>{{this.title}}</h2>
+            <p>{{this.description}}</p>
+            <img src="{{this.thumbnail}}" alt="{{this.title}}">
+            <p>Price: {{this.price}}</p>
+            <button class="addToCartBtn" id="{{this._id}}" data-user-cart="{{userCart}}">Add to Cart</button>
+        </div>
+    {{/each}}
+</div>
 
 {{#if hasPrevPage}}
-<button><a href="/products?page={{prevPage}}">Previous</a></button>
+    <button class="css-button-retro--yellow"><a href="/products?page={{prevPage}}">Previous Page</a></button>
 {{/if}}
 
 {{#if hasNextPage}}
-<button><a href="/products?page={{nextPage}}">Next</a></button>
+    <button class="css-button-retro--yellow"><a href="/products?page={{nextPage}}">Next Page</a></button>
 {{/if}}
 <script src="js/products.js"></script>
