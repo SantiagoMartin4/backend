@@ -36,6 +36,26 @@ const userSchema = mongoose.Schema({
     },
     tokenRestore: {
         type: Object,
+    },
+    documents: {
+        type: [
+            {
+                name: {
+                    type: String
+                },
+                reference: {
+                    type: String,
+                    default: null,
+                },
+                field: {
+                    type: String,
+                    default: null,
+                }
+            }
+        ]
+    },
+    lastConnection: {
+        type: Date
     }
 });
 

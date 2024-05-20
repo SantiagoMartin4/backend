@@ -11,10 +11,6 @@ const userService = new Users();
 const mailingService = new MailingService();
 
 
-export const getCurrentUser = (req, res) => {
-    /* const user = asd; */
-}
-
 export const register = async (req, res) => {
     //ahora se maneja todo desde passport (validación y creado en DB), por lo que si pasa mediante middleware toda esa autenticaciòn, solamente mando el send user registered
     res.status(201).redirect('/login')
@@ -31,12 +27,9 @@ export const current = async (req, res) => {
     res.render('current', currentUser)
 }
 
-export const login = (req, res) => {
+export const login = async (req, res) => {
     if (!req.user) {
-/*         return res.status(400).send({message: 'Invalid credentials'}) */
-        req.flash('error', 'Invalid credentials'); // Establece el mensaje flash de error
-/*         return res.status(401).redirect('/faillogin'); */
-        return res.status(401).send({ message: req.flash('error') }).redirect('/faillogin'); 
+        return res.status(401).redirect('/faillogin'); 
     }
     req.session.user = {
         firstName: req.user.firstName,
@@ -50,16 +43,15 @@ export const login = (req, res) => {
     res.redirect('/products');
 };
 
-export const failLogin = (req, res) => {
-    console.log('La función failLogin se ha ejecutado correctamente')
-    console.log('Contenido de la sesión:', req.session);
-    const errorMessage = req.flash('error')[0];
-    req.logger.info('errorMessage');
-    res.status(400).send({ error: errorMessage }) 
-}
 
 export const logout = async (req, res) => {
     try {
+        const user = await userModel.findById(req.session.user._id);
+        if (user) {
+            // Actualiza lastConnection en el logout
+            user.lastConnection = new Date();
+            await user.save();
+        }
         req.session.destroy((error) => {
             if (error) {
                 req.logger.error("Logout failed");
@@ -67,7 +59,7 @@ export const logout = async (req, res) => {
             }
         });
         //lo paso con res.send para manejar el redirect desde el front end con un botón
-        req.logger.info("User logged out");
+        req.logger.info("User logged out - Session Destroyed");
         res.send({ redirect: `http://localhost:${port}/login` });
         //también se puede hacer como en el login 
         // res.redirect('/login')
@@ -159,9 +151,7 @@ export const restorePassword = async (req, res) => {
             const passwordRepeat = true;
             return res.render('restore-password', { passwordRepeat });
         }
-        // Actualizar la contraseña del usuario y eliminar el token utilizado
         user.password = createHash(password);
-        /*         user.tokenRestore = null; // Eliminar el token */
         await user.save();
         req.logger.info('password successfully changed')
         res.redirect('/login')
@@ -170,10 +160,6 @@ export const restorePassword = async (req, res) => {
         res.status(400).send({ error: 'Error updating password' });
     }
 };
-
-
-
-
 
 export const githubCallback = (req, res) => {
     req.session.user = req.user

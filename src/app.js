@@ -91,9 +91,13 @@ app.use(session({
     secret: secret,
     store: MongoStore.create({
         mongoUrl: mongoUrl,
+        ttl: 2 * 24 * 60 * 60 // 2 días en segundos
     }),
-    resave: true,
-    saveUninitialized: true
+    resave: false, // no reescribe la sesión si es que no la modifico
+    saveUninitialized: false, // No va a guardar una session sin inicializar (por ej. no se agregaron datos a la sesion, osea no guarda sesion vacias)
+    cookie: {
+        maxAge: 2 * 24 * 60 * 60 * 1000 // 2 días en milisegundos (luego el navegador la destruye automaticamentee)
+    }
 }));
 
 // Configuro express-flash (lo estoy usando para redirigir desde passport en caso de login fallido)
@@ -137,5 +141,5 @@ app.use('/api/users', usersRoutes)
 
 
 // declaro el uso de errorHandler
-app.use(errorHandler)
+/* app.use(errorHandler) */
 

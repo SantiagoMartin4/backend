@@ -7,6 +7,7 @@ class UserDTO {
         this.email = user.email;
         this.password = createHash(user.password);
         this.role = user.role;
+        this.lastConnection = user.lastConnection
     
     }
 
@@ -14,7 +15,8 @@ class UserDTO {
         return {
             fullName: this.firstName + ' ' + this.lastName,
             email: this.email,
-            role: this.role
+            role: this.role,
+            lastConnection: this.lastConnection
         };
     }
 }

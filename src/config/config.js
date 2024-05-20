@@ -32,11 +32,13 @@ const getVariables = (options) => {
         mailingUser: process.env.MAILING_USER,
         mailingService: process.env.MAILING_SERVICE,
         mailingPassword: process.env.MAILING_PASSWORD,
-        mailingPort: process.env.MAILING_PORT
+        mailingPort: process.env.MAILING_PORT,
     };
 };
 
 export const { port, mongoUrl, secret, userAdmin, passAdmin, githubClientId, githubClientSecret, mailingUser, mailingService, mailingPassword, mailingPort } = getVariables(options);
+
+
 // OTRA FORMA CON LOS PATH FIJOS
 
 /* import dotenv from 'dotenv';

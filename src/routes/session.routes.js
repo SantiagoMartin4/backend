@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { register, failedRegister, current, login, logout, restorePassword, githubCallback, failLogin, forgotPassword, restorePasswordToken } from "../controllers/session.controller.js";
+import { register, failedRegister, current, login, logout, restorePassword, githubCallback, forgotPassword, restorePasswordToken } from "../controllers/session.controller.js";
 
 const sessionRoutes = Router();
 
@@ -12,13 +12,10 @@ sessionRoutes.get('/current', current)
 
 sessionRoutes.post('/login',
     passport.authenticate('login', {
-        failureRedirect: '/faillogin',
-        failureFlash: true
+        failureRedirect: '/faillogin'
     }),
     login
 );
-
-sessionRoutes.get('/faillogin', failLogin);
 
 sessionRoutes.post('/logout', logout);
 

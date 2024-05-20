@@ -1,12 +1,15 @@
 import { Router } from 'express';
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
-import { checkAuth, checkExistingUser } from '../middlewares/auth.js';
+import { checkAuth, checkExistingUser, roleAuth } from '../middlewares/auth.js';
 import { getUserCart } from '../controllers/cart.controller.js';
+import { Users } from '../dao/managerDB/UserMongoManager.js';
+
 /* import { cartModel }  from '../dao/models/carts.model.js' */
 
 const viewsRoutes = Router();
 
 const productManager = new ProductMongoManager();
+const userManager = new Users();
 
 viewsRoutes.get('/', checkAuth, (req, res) => {
 });
@@ -19,11 +22,10 @@ viewsRoutes.get('/register', checkExistingUser, (req, res) => {
     res.render('register');
 });
 
-viewsRoutes.get('/realtimeproducts', (req, res) => {
+viewsRoutes.get('/realtimeproducts', checkAuth, (req, res) => {
     res.render('realTimeProducts', {});
 });
 
-// TO DO : SACAR LOGICA DE /PRODUCTS DE ESTE ROUTER. VER BIEN DONDE VA
 
 viewsRoutes.get('/products', checkAuth, async (req, res) => {
     try {
@@ -63,5 +65,16 @@ viewsRoutes.get('/faillogin', (req, res) => {
 viewsRoutes.get('/failregister', (req, res) => {
     res.render('failregister');
 });
+
+viewsRoutes.get('/documents', checkAuth, async (req, res) => {
+    const user = req.session.user;
+    const userData = await userManager.getUsersByEmail(user.email)
+    res.render('documents', userData);
+});
+
+viewsRoutes.get('/users', roleAuth(['admin']), async (req, res) => {
+    res.render('users')
+})
+
 
 export default viewsRoutes;

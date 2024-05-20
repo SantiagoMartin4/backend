@@ -1,0 +1,20 @@
+<h1>Upload Documents</h1>
+<form action="/api/users/{{_id}}/documents" method="post" enctype="multipart/form-data">
+    <label for="profile_image">Profile Image:</label><br>
+    <input type="file" id="profile_image" name="profile_image" accept=".jpeg, .jpg, .png"><br>
+
+    <label for="product_image">Product Image:</label><br>
+    <input type="file" id="product_image" name="product_image" accept=".jpeg, .jpg, .png"><br>
+
+    <label for="identification">Identification:</label><br>
+    <input type="file" id="identification" name="identification" accept=".pdf, .doc, .docx"><br>
+
+    <label for="proof_of_address">Proof of Address:</label><br>
+    <input type="file" id="proof_of_address" name="proof_of_address" accept=".pdf, .doc, .docx"><br>
+
+    <label for="bank_statement">Bank Statement:</label><br>
+    <input type="file" id="bank_statement" name="bank_statement" accept=".pdf, .doc, .docx"><br>
+    <br>
+    <br>
+    <input type="submit" value="Upload">
+</form>

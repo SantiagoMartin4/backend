@@ -4,20 +4,15 @@ import { userModel } from '../dao/models/user.model.js';
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
 import { githubClientId, githubClientSecret } from "./config.js";
-import customErrors from "../services/errors/customErrors.js";
+/* import customErrors from "../services/errors/customErrors.js";
 import errorEnum from "../services/errors/error.enum.js";
-import { invalidCredentials } from "../services/errors/info.js";
+import { invalidCredentials } from "../services/errors/info.js"; */
 import { CartMongoManager } from '../dao/managerDB/CartMongoManager.js'
 
 
 const cartController = new CartMongoManager()
 
-
-
-
 const LocalStrategy = local.Strategy;
-
-
 
 const initializePassport = () => {
     passport.use('register', new LocalStrategy(
@@ -43,7 +38,6 @@ const initializePassport = () => {
                     return done(null, result);
                 } else {
                     const newCart = await cartController.addCart();
-                    console.log(newCart); 
                     const newUser = {
                         firstName,
                         lastName,
@@ -52,7 +46,6 @@ const initializePassport = () => {
                         password: createHash(password),
                         cart: newCart._id 
                     }
-                    console.log(newUser);
                     const result = await userModel.create(newUser);
                     return done(null, result);
                 }
@@ -80,6 +73,8 @@ const initializePassport = () => {
                     return done(null, false);*/
                     return done(null, false, {message: 'Invalid credentials'});
                 }
+                user.lastConnection = new Date();
+                await user.save();
                 return done(null, user);
             } catch (error) {
                 return done(error);
@@ -105,8 +100,9 @@ const initializePassport = () => {
                         password: 'GithubGenerated'
                     }
                     const result = await userModel.create(newUser);
-                    return done(null, result);
                 }
+                user.lastConnection = new Date();
+                await user.save();
                 return done(null, user);
             } catch (error) {
 

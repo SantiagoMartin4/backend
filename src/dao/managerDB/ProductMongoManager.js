@@ -23,13 +23,14 @@ export class ProductMongoManager {
     async getProductById(id) {
         try {
             const prod = await productModel.findOne({ _id: id })
-            if (prod)
+            if (prod){
+                console.log(prod)
                 return { message: "OK", rdo: prod }
-            else
-                return { message: "ERROR", rdo: "El productos no existe" }
+        }else
+                return { message: "ERROR", rdo: 'Non existing product' }
         }
         catch (e) {
-            return { message: "ERROR", rdo: "Error al obtener el producto - " + e.message }
+            return { message: "ERROR", rdo: "Error obtaining product - " + e.message }
         }
     }
 

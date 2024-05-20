@@ -4,9 +4,11 @@ import customErrors from '../services/errors/customErrors.js';
 import errorEnum from '../services/errors/error.enum.js';
 import { generateProductErrorInfo, productNotFound } from '../services/errors/info.js';
 import { generateProduct } from '../utils/faker.js';
-
+import MailingService from '../services/mailing.js';
 
 const productController = new ProductMongoManager();
+const mailingService = new MailingService();
+
 
 export const getProducts = async (req, res) => {
     try {
@@ -50,7 +52,6 @@ export const addProduct = async (req, res) => {
         });
     }
     const userRole = req.user.role
-    console.log(userRole);
     if (userRole === 'premium') {
         newProduct.owner = req.user.email;
     }
@@ -86,13 +87,24 @@ export const deleteProduct = async (req, res) => {
         const { pId } = req.params
         const product = await productController.getProductById(pId);
         const productOwner = product.rdo.owner
-        if (req.user.role === 'premium' && product.rdo.owner !== req.user.email) {
+        console.log({'product owner': productOwner})
+        if (req.user.role === 'premium' && productOwner !== req.user.email) {
             return res.status(403).send({ message: 'Unauthorized' });
         }
         const deleted = await productController.deleteProduct(pId)
 
         if (deleted.message === "OK") {
             req.logger.info('Product deleted')
+            const owner = await userService.getUserByEmail(productOwner);
+            if (owner && owner.role === 'premium') {
+                await mailingService.sendSimpleMail({
+                    from: "E-Commerce",
+                    to: owner.email,
+                    subject: "Product Deleted Notification",
+                    html: `<p>Hello ${owner.firstName}, your product with ID ${pId} has been deleted.</p>`
+                });
+                req.logger.info(`Notification sent to premium user: ${owner.email}`);
+            }
         }
         return res.status(200).json(deleted.rdo)
         /*         return res.status(200).json(deleted) */
