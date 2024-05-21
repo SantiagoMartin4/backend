@@ -5,7 +5,7 @@ const addProductToCart = async (pId) => {
         // Obtén el valor de cId del elemento oculto
         const cId = document.getElementById('userCart').value;
         
-        const result = await fetch(`http://localhost:8080/api/carts/${cId}/product/${pId}`, {
+        const result = await fetch(`https://backend-production-58a0.up.railway.app/api/carts/${cId}/product/${pId}`, {
             body: JSON.stringify({ quantity: 1 }),
             method: 'post',
             headers: {
@@ -33,7 +33,7 @@ for (let btn of btns) {
 const logoutBtn = document.getElementById('logoutBtn');
 
 logoutBtn.addEventListener('click', async (e) => {
-    const result = await fetch('http://localhost:8080/api/session/logout', {
+    const result = await fetch('https://backend-production-58a0.up.railway.app/api/session/logout', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
