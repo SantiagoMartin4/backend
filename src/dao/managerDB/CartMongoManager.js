@@ -151,6 +151,16 @@ export class CartMongoManager {
             console.error(error);
             return false;
         }
+    };
+
+    async deleteCart(cId) {
+        try {
+            const deleted = await cartModel.deleteOne( { _id: cId } );
+            return true
+        } catch (error) {
+            console.error(error)
+            return false
+        }
     }
 }
 

@@ -69,6 +69,10 @@ export const addProductsInCart = async (req, res) => {
         const { cId, pId } = req.params;
         const { quantity } = req.body;
         const cartData = await cartController.getCartById(cId);
+        const product = await productController.getProductById(pId);
+        if (req.user.email === product.rdo.owner) {
+            return res.status(403).send({ message: 'Unauthorized' });
+        }
         // Verificar si el usuario es premium
         if (req.user.role === 'premium') {
             let checkForProductInCart = cartData.products.find(p => p.product._id.toString() === pId);
@@ -77,10 +81,9 @@ export const addProductsInCart = async (req, res) => {
                 return res.status(403).send({ message: 'Unauthorized' });
             }
         }
-
         // Verificar si el producto no está en el carrito
         if (typeof checkForProductInCart === 'undefined') {
-            // Agregar el producto al carrito con la cantidad recibida del cuerpo de la solicitud
+            // Agregar el producto al carrito con la cantidad recibida del cuerpo de la solicitud (por defecto la deje en 1 hasta que implemente los botones de sumar varias unidades, aunque dejo la lógica ya encaminada para la implementación)
             cartData.products.push({ product: pId, quantity: quantity });
         } else {
             // Si el producto ya está en el carrito, aumentar la cantidad sumando la cantidad recibida por el body

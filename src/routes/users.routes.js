@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { premiumRole, documents, getUsers, deleteInactiveUsers } from "../controllers/user.controller.js";
+import { premiumRole, documents, getUsers, deleteInactiveUsers, roleUpdate, deleteUser } from "../controllers/user.controller.js";
 import { multerUploader } from "../utils/multer.js";
 import { checkAuth, roleAuth } from "../middlewares/auth.js";
 
@@ -8,6 +8,8 @@ const usersRoutes = Router();
 
 
 usersRoutes.get('/premium/:uid', checkAuth, premiumRole);
+usersRoutes.put('/premium/admin/:email', roleAuth(['admin']), roleUpdate);
+usersRoutes.delete('/admin/:email', roleAuth(['admin']), deleteUser); 
 
 usersRoutes.post('/:uid/documents', checkAuth, multerUploader.fields([
     { name: 'profile_image', maxCount: 1 },

@@ -24,7 +24,6 @@ export class ProductMongoManager {
         try {
             const prod = await productModel.findOne({ _id: id })
             if (prod){
-                console.log(prod)
                 return { message: "OK", rdo: prod }
         }else
                 return { message: "ERROR", rdo: 'Non existing product' }
@@ -69,13 +68,13 @@ export class ProductMongoManager {
             const deleted = await productModel.deleteOne({ _id: id })
 
             if (deleted.deletedCount === 0) {
-                return { message: "ERROR", rdo: `No se encontró un producto con el ID ${id}. No se pudo eliminar.` }
+                return { message: "ERROR", rdo: `Cannot find Product with ID ${id}` }
             }
 
-            return { message: "OK", rdo: `Producto con ID ${id} eliminado exitosamente.` }
+            return { message: "OK", rdo: `Product with former ID ${id} succesffully deleted` }
         }
         catch (e) {
-            return { message: "ERROR", rdo: "Error al momento de eliminar el producto - " + e.message }
+            return { message: "ERROR", rdo: "Error while trying to delete product - " + e.message }
         }
     }
 }

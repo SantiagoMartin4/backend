@@ -1,9 +1,11 @@
 import UserDTO from "../dao/dtos/user.dto.js";
 import { Users } from "../dao/managerDB/UserMongoManager.js";
 import MailingService from "../services/mailing.js";
+import { CartMongoManager } from '../dao/managerDB/CartMongoManager.js'
 
 const userController = new Users();
 const mailingService = new MailingService();
+const cartController = new CartMongoManager();
 
 export const premiumRole = async (req, res) => {
     try {
@@ -111,5 +113,41 @@ export const deleteInactiveUsers = async (req, res) => {
     } catch (error) {
         console.error('Error deleting inactive users:', error);
         res.status(500).send({ error: 'Internal server error' });
+    }
+};
+
+export const roleUpdate = async (req, res) => {
+    try {
+        const { email } = req.params;
+        const user = await userController.getUsersByEmail(email);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        // Cambiar el rol de premium a user y viceversa
+        user.role = user.role === 'premium' ? 'user' : 'premium';
+        await user.save();
+        res.status(200).json({ message: 'User role updated successfully' });
+    } catch (error) {
+        console.error('Error updating user role:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+export const deleteUser = async (req, res) => {
+    try {
+        const { email } = req.params;
+        const user = await userController.getUsersByEmail(email);
+        const uId = user._id
+        // elimino el carrito asociado a ese user antes de eliminar el user, tomando el cart id guardado en la DB
+        const cId = user.cart
+        const deleteUserCart = await cartController.deleteCart(cId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        await userController.deleteUserById(uId)
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };

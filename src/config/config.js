@@ -33,10 +33,11 @@ const getVariables = (options) => {
         mailingService: process.env.MAILING_SERVICE,
         mailingPassword: process.env.MAILING_PASSWORD,
         mailingPort: process.env.MAILING_PORT,
+        stripePrivateKey: process.env.STRIPE_PRIVATE_KEY
     };
 };
 
-export const { port, mongoUrl, secret, userAdmin, passAdmin, githubClientId, githubClientSecret, mailingUser, mailingService, mailingPassword, mailingPort } = getVariables(options);
+export const { port, mongoUrl, secret, userAdmin, passAdmin, githubClientId, githubClientSecret, mailingUser, mailingService, mailingPassword, mailingPort, stripePrivateKey } = getVariables(options);
 
 
 // OTRA FORMA CON LOS PATH FIJOS

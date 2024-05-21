@@ -5,10 +5,11 @@ import errorEnum from '../services/errors/error.enum.js';
 import { generateProductErrorInfo, productNotFound } from '../services/errors/info.js';
 import { generateProduct } from '../utils/faker.js';
 import MailingService from '../services/mailing.js';
+import { Users } from '../dao/managerDB/UserMongoManager.js';
 
 const productController = new ProductMongoManager();
 const mailingService = new MailingService();
-
+const userController = new Users();
 
 export const getProducts = async (req, res) => {
     try {
@@ -87,31 +88,28 @@ export const deleteProduct = async (req, res) => {
         const { pId } = req.params
         const product = await productController.getProductById(pId);
         const productOwner = product.rdo.owner
-        console.log({'product owner': productOwner})
         if (req.user.role === 'premium' && productOwner !== req.user.email) {
             return res.status(403).send({ message: 'Unauthorized' });
         }
         const deleted = await productController.deleteProduct(pId)
-
         if (deleted.message === "OK") {
             req.logger.info('Product deleted')
-            const owner = await userService.getUserByEmail(productOwner);
+            const owner = await userController.getUsersByEmail(productOwner);
             if (owner && owner.role === 'premium') {
                 await mailingService.sendSimpleMail({
                     from: "E-Commerce",
                     to: owner.email,
                     subject: "Product Deleted Notification",
-                    html: `<p>Hello ${owner.firstName}, your product with ID ${pId} has been deleted.</p>`
+                    html: `<p>Hello ${owner.firstName}, your product with ID ${pId} has been deleted from the e-commerce app.</p>`
                 });
                 req.logger.info(`Notification sent to premium user: ${owner.email}`);
             }
         }
         return res.status(200).json(deleted.rdo)
-        /*         return res.status(200).json(deleted) */
     }
     catch (err) {
         req.logger.error('Product NOT deleted')
-        res.status(400).json({ menssage: err })
+        res.status(400).json({ message: 'Cannot delete product' })
     }
 };
 

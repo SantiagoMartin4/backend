@@ -43,9 +43,11 @@ app.use(express.urlencoded({ extended: true }));
 // Declaro mi carpeta public con static de express
 app.use(express.static('public'));
 
+//declaro uso de cors 
+/* app.use(cors()); */
+
 //declaro el uso de logger
 app.use(addLogger)
-
 
 // Declaro mi conexión con mongoose
 

@@ -13,9 +13,9 @@ const addProductToCart = async (pId) => {
             }
         });
         if (result.status === 200 || result.status === 201) {
-            alert('Producto agregado al carrito');
+            alert('Product added to cart');
         } else {
-            alert('No se puede agregar el producto al carrito');
+            alert('Cannot add product to cart');
         }
     } catch (error) {
         alert('Error, algo salió mal');
