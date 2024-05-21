@@ -32,6 +32,7 @@ The backend of this e-commerce application allows users to perform actions such 
 - **MongoDB**: NoSQL database for data storage.
 - **Mongoose**: ODM (Object Data Modeling) for MongoDB and Node.js.
 - **Passport.js**: Authentication middleware for Node.js.
+- **Handlebars**: Template engine for rendering dynamic HTML.
 - **Socket.io**: Library for real-time web applications.
 - **Nodemailer**: Node.js module to send emails.
 - **Swagger**: Tool for API documentation.
@@ -135,6 +136,7 @@ El backend de este e-commerce permite a los usuarios realizar acciones como regi
 - **Passport.js**: Middleware de autenticación para Node.js.
 - **Socket.io**: Biblioteca para aplicaciones web en tiempo real.
 - **Nodemailer**: Módulo de Node.js para enviar correos electrónicos.
+- **Handlebars**: Motor de plantillas para renderizado dinamico. También se abordó el uso de React y la conexión entre Frontend - Backend (React - Node)
 - **Swagger**: Herramienta para la documentación de la API.
 - **Chai**: Librería de aserciones para Node.js y el navegador.
 - **Mocha**: Framework de pruebas para Node.js.
