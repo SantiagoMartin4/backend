@@ -52,9 +52,9 @@ app.use(addLogger)
 // Declaro mi conexión con mongoose
 
 const connectMongo = mongoose.connect(mongoUrl);
-
-const httpServer = app.listen(port, () => {
-    console.log(`Server running on ${port}`);
+const listenPort = port||8080
+const httpServer = app.listen(listenPort, () => {
+    console.log(`Server running on ${listenPort}`);
 });
 
 // configuro swaggerconfiguration
