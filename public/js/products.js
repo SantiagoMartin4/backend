@@ -6,11 +6,11 @@ const addProductToCart = async (pId) => {
         const cId = document.getElementById('userCart').value;
         
         const result = await fetch(`https://backend-production-58a0.up.railway.app/api/carts/${cId}/product/${pId}`, {
-            body: JSON.stringify({ quantity: 1 }),
-            method: 'post',
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },    
+            body:JSON.stringify({"quantity": 1})
         });
         if (result.status === 200 || result.status === 201) {
             alert('Product added to cart');
@@ -34,7 +34,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 
 logoutBtn.addEventListener('click', async (e) => {
     const result = await fetch('https://backend-production-58a0.up.railway.app/api/session/logout', {
-        method: 'post',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         }
