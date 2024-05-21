@@ -2,3 +2,4 @@
 /src/.env.development
 /src/.env.production
 /errors.log
+/uploads
