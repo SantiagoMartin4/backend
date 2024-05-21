@@ -5,7 +5,9 @@
   "main": "src/app.js",
   "type": "module",
   "scripts": {
+    "start": "node src/app.js",
     "test": "mocha src/test/session.test.js"
+    
   },
   "keywords": [],
   "author": "",
