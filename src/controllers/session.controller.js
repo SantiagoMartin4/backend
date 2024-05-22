@@ -95,7 +95,7 @@ export const forgotPassword = async (req, res) => {
             html: `
             <h1>Hello, did you forget your password?
             here is a link to reset it </h1>
-            <p>Click on the following link <a href="http://localhost:${port}/api/session/restore-password/${token}">here</a> to restore your password</p>
+            <p>Click on the following link <a href="https://backend-production-58a0.up.railway.app/api/session/restore-password/${token}">here</a> to restore your password</p>
         `
         });
         const handlebarsValidation = true;
