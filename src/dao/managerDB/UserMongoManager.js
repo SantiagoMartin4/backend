@@ -51,15 +51,6 @@ export class Users {
     };
     
 
-/*     async updateUser(id, tokenObj){
-        try {
-            const updated = await userModel.findOneAndUpdate({ _id: id }, { tokenRestore: tokenObj });
-            console.log(updated)
-            return updated;
-        } catch (error) {
-            req.logger.error('Cannot update User')
-        }
-    } */
 
     async getUserById(id) {
         try {

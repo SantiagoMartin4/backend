@@ -1,15 +1,6 @@
 import { userModel } from "../dao/models/user.model.js";
 import { isValidPassword } from "../utils/bcrypt.js";
 
-// Versión 1 de checkAuth (más legible pero más rústica)
-/* export const checkAuth = (req, res, next) => {
-    console.log(req.session.user)
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
-    next();
-}
- */
 // Versión 2 de checkAuth (más estilizada usando isAuthenticated que es un mètodo de la librería passport)
 export const checkAuth = (req, res, next) => {
     if (req.isAuthenticated && req.isAuthenticated()) {

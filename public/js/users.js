@@ -8,7 +8,6 @@ try {
         }
     });
     const users = await response.json();
-    console.log(users)
     const usersContainer = document.getElementById('usersContainer');
     usersContainer.innerHTML = '';
 
@@ -39,7 +38,6 @@ document.getElementById('deleteInactiveUsersBtn').addEventListener('click', asyn
         }
     });
     const result = await response.json();
-    console.log(result);
 });
 
 document.getElementById('usersContainer').addEventListener('click', async (event) => {
@@ -53,7 +51,6 @@ document.getElementById('usersContainer').addEventListener('click', async (event
                 }
             });
             const result = await response.json();
-            console.log(result);
             alert('User role updated successfully');
         } catch (error) {
             console.error('Error updating user role:', error);
@@ -69,7 +66,6 @@ document.getElementById('usersContainer').addEventListener('click', async (event
                 }
             });
             const result = await response.json();
-            console.log(result);
             alert('User deleted successfully');
         } catch (error) {
             console.error('Error deleting user:', error);

@@ -36,12 +36,11 @@ socket.on('messageLogs', data => {
 })
 
 socket.on('getProdsWithSocket', async (products) => { 
-    /* console.log('received product data:', products); */
     const productList = document.getElementById('productList');
     productList.innerHTML = '';
     products.forEach(p => {
         const listProducts = document.createElement('li');
-        listProducts.textContent = `Product ID: ${p.id}, title: ${p.title}, Price: $${p.price}, Description: ${p.description}, Stock: ${p.stock}, Code: ${p.code}, Thumbnail: ${p.thumbnail}`;
+        listProducts.textContent = `Product ID: ${p._id}, title: ${p.title}, Price: $${p.price}, Description: ${p.description}, Stock: ${p.stock}, Code: ${p.code}, Owner: ${p.owner}`;
         productList.appendChild(listProducts);
     });
 }); 
