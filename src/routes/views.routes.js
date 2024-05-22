@@ -45,7 +45,7 @@ viewsRoutes.get('/products', checkAuth, async (req, res) => {
 viewsRoutes.get('/cart', checkAuth, async (req, res) => {
         const { user } = req.session;
         const cartData = await getUserCart(user.cart);
-        res.render('cart', { cartData });
+        res.render('cart', { cartData, user });
 });
 
 

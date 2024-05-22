@@ -1,11 +1,13 @@
 import { CartMongoManager } from '../dao/managerDB/CartMongoManager.js'
 import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { TicketMongoManager } from '../dao/managerDB/TicketMongoManager.js';
+import MailingService from '../services/mailing.js';
 
 
 const cartController = new CartMongoManager()
 const productController = new ProductMongoManager();
 const ticketController = new TicketMongoManager();
+const mailingService = new MailingService();
 
 export const getCarts = async (req, res) => {
     const carts = await cartController.getCarts();
@@ -181,14 +183,12 @@ export const updateProductInCart = async (req, res) => {
 
 export const purchaseCart = async (req, res) => {
     const { cId } = req.params;
-    console.log(cId)
     try {
         const cartData = await cartController.getCartById(cId);
-        console.log({ cartData })
         const updatedProducts = cartData.products.filter(product => {
             const availableStock = product.product.stock >= product.quantity;
             if (!availableStock) {
-                // esta línea ajusta la compra al máximo posible según el stock
+                // Ajusta la compra al máximo posible según el stock
                 product.quantity = Math.min(product.quantity, product.product.stock);
             }
             return availableStock;
@@ -207,20 +207,52 @@ export const purchaseCart = async (req, res) => {
             };
             await productController.updateProduct(product.product._id, newStock);
         }
-        const { email } = req.body;
+
+        const email = req.user.email;
         const ticketData = {
             code: Math.floor(Math.random() * 900000) + 100000,
             purchaseDateTime: new Date(),
             amount: totalPrice,
-            /* purchaser : req.user.email */
-            purchaser: email
-        }
+            purchaser: email,
+            products: updatedProducts.map(product => ({
+                productId: product.product._id,
+                quantity: product.quantity,
+                price: product.product.price
+            }))
+        };
+
         await ticketController.addTicket(ticketData);
-        req.logger.info('Ticket created')
-        return res.status(200).json({ message: 'Ticket created', ticketData });
+        req.logger.info('Ticket created');
+
+        // Enviar correo electrónico al comprador utilizando el mailingService
+        const mailOptions = {
+            from: process.env.MAILING_USER,
+            to: email,
+            subject: 'Compra realizada con éxito',
+            html: `
+                <h1>Gracias por tu compra</h1>
+                <p>Tu compra ha sido procesada con éxito. A continuación, los detalles de tu compra:</p>
+                <ul>
+                    ${updatedProducts.map(product => `
+                        <li>
+                            <strong>Producto:</strong> ${product.product.title}<br>
+                            <strong>Cantidad:</strong> ${product.quantity}<br>
+                            <strong>Precio:</strong> $${product.product.price.toFixed(2)}<br>
+                        </li>
+                    `).join('')}
+                </ul>
+                <p><strong>Total:</strong> $${totalPrice.toFixed(2)}</p>
+                <p><strong>Fecha de compra:</strong> ${ticketData.purchaseDateTime.toLocaleString()}</p>
+                <p>Código de la compra: ${ticketData.code}</p>
+            `
+        };
+
+        await mailingService.sendSimpleMail(mailOptions);
+        req.logger.info('Email sent to purchaser');
+        const clearCart = await cartController.deleteAllProductsInCart(cId)
+        return res.status(200).json({ message: 'Ticket created and email sent', ticketData });
     } catch (error) {
-        req.logger.error('Cart not purchased, Ticket not created')
+        req.logger.error('Cart not purchased, Ticket not created');
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
-

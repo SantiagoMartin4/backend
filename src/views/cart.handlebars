@@ -1,4 +1,5 @@
-<h1 class="cart-header">This is your cart</h1>
+<h1 class="cart-header">CART</h1>
+<h2>Hello {{user.firstName}}, this is your current cart</h2>
 <table class="cart-table">
     <thead>
         <tr>
@@ -28,3 +29,7 @@
 </table>
 
 <button class="css-button-retro--sky"><a href="/products">Back to products</a></button>
+<button id="buyCartBtn" class="css-button-3d--green">Buy Cart</button>
+
+<script src="/js/cart.js"></script>
+<input type="hidden" id="cartId" value="{{cartData.userCart._id}}">
