@@ -1,16 +1,27 @@
 <h1> Welcome to our store</h1>
 
-<h2> Hi, {{firstName}} {{lastName}} here you will find our products :</h2>
 
 <button id="logoutBtn" class="css-button-3d--red" type="button">Logout</button>
 
 <!-- Elemento oculto para almacenar cId -->
 <input type="hidden" id="userCart" value="{{userCart}}">
+{{#unless isAdmin}}
+    <!-- Botón para redireccionar hacia la vista del carrito -->
+    <button class="css-button-3d--green"><a href="/cart">Show Cart</a></button>
+{{/unless}}
 
-<!-- Botón para redireccionar hacia la vista del carrito -->
-<button class="css-button-3d--green"><a href="/cart">Show Cart</a></button>
+{{#unless isAdmin}}
+    <!-- Botón para redireccionar hacia la vista del carrito -->
+    <button id="css-button-3d--grey"><a href="/documents">Documents</a></button>
+{{/unless}}
 
 
+{{#if isAdmin}}
+    <!-- Botón para redireccionar hacia el panel de administrador -->
+    <button class="adminPanelBtn" id="css-button-3d--grey"><a href="/users">Admin Panel</a></button>
+{{/if}}
+
+<h2> Hi, {{firstName}} {{lastName}} here you will find our </h2>
 
 <h3>PRODUCTS</h3>
 

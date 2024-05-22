@@ -3,6 +3,7 @@ import { ProductMongoManager } from '../dao/managerDB/ProductMongoManager.js';
 import { checkAuth, checkExistingUser, roleAuth } from '../middlewares/auth.js';
 import { getUserCart } from '../controllers/cart.controller.js';
 import { Users } from '../dao/managerDB/UserMongoManager.js';
+import { userAdmin } from '../config/config.js';
 
 /* import { cartModel }  from '../dao/models/carts.model.js' */
 
@@ -11,7 +12,8 @@ const viewsRoutes = Router();
 const productManager = new ProductMongoManager();
 const userManager = new Users();
 
-viewsRoutes.get('/', checkAuth, (req, res) => {
+viewsRoutes.get('/', (req, res) => {
+    res.redirect('/login');
 });
 
 viewsRoutes.get('/login', checkExistingUser, (req, res) => {
@@ -31,13 +33,15 @@ viewsRoutes.get('/products', checkAuth, async (req, res) => {
     try {
         const { page } = req.query;
         const { user } = req.session;
+        const isAdmin = user.email === userAdmin;
         const productsData = await productManager.getProducts(10, page);
         productsData.firstName = user.firstName;
         productsData.lastName = user.lastName;
         productsData.userCart = user.cart;
-        res.render('products', { ...productsData, userCart: user.cart })
+        res.render('products', { ...productsData, userCart: user.cart, isAdmin });
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
