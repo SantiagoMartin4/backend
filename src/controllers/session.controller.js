@@ -60,7 +60,7 @@ export const logout = async (req, res) => {
         });
         //lo paso con res.send para manejar el redirect desde el front end con un botón
         req.logger.info("User logged out - Session Destroyed");
-        res.send({ redirect: `http://localhost:${port}/login` });
+        res.send({ redirect: '/login' });
         //también se puede hacer como en el login 
         // res.redirect('/login')
     } catch (error) {
